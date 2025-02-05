@@ -11,11 +11,12 @@ class SampleItemDetailsView extends StatelessWidget {
     // Извлекаем переданный id
 //    final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
 
-    final String itemId = ModalRoute.of(context)!.settings.arguments as String;
+    int itemId = ModalRoute.of(context)!.settings.arguments as int;
+    itemId += 33;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Item Details'),
+        title: Text('Item Details  $itemId'),
       ),
       body: Center(
         child: Text('Item ID: sdasd выафывафыва $itemId'), // Отображаем id

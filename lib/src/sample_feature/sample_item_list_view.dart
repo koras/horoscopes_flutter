@@ -109,7 +109,7 @@ class SampleItemListView extends StatelessWidget {
                 Navigator.restorablePushNamed(
                   context,
                   SampleItemDetailsView.routeName,
-                  arguments: item.id.toString(), // Передаем id элемента
+                  arguments: item.id, // Передаем id элемента
                 );
               });
         },
