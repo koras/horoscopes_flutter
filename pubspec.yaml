@@ -14,8 +14,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  intl: ^0.17.0  # Используйте последнюю версию
   pedantic: ^1.11.0
   dio: ^5.4.0  # Проверь актуальную версию на pub.dev
+  flutter_svg: ^2.0.0+1  # Убедитесь, что используете последнюю версию
 
 dev_dependencies:
   flutter_test:

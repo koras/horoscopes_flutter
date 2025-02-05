@@ -19,6 +19,21 @@ class CountryListPage extends StatefulWidget {
 }
 
 class _CountryListPageState extends State<CountryListPage> {
+  Map<String, dynamic> zodiac = {
+    'aquarius': {'img': 'assets/images/zodiac/aquarius.png'},
+    'aries': {'img': 'assets/images/zodiac/aries.png'},
+    'cancer': {'img': 'assets/images/zodiac/cancer.png'},
+    'capricorn': {'img': 'assets/images/zodiac/capricorn.png'},
+    'gemini': {'img': 'assets/images/zodiac/gemini.png'},
+    'leo': {'img': 'assets/images/zodiac/leo.png'},
+    'libra': {'img': 'assets/images/zodiac/libra.png'},
+    'pisces': {'img': 'assets/images/zodiac/pisces.png'},
+    'sagitarius': {'img': 'assets/images/zodiac/sagitarius.png'},
+    'scorpio': {'img': 'assets/images/zodiac/scorpio.png'},
+    'taurus': {'img': 'assets/images/zodiac/taurus.png'},
+    'virgo': {'img': 'assets/images/zodiac/virgo.png'},
+  };
+
   List<dynamic> countries = [];
   List<dynamic> filteredCountries = [];
   TextEditingController searchController = TextEditingController();
