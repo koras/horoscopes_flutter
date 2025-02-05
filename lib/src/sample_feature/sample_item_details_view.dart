@@ -8,12 +8,17 @@ class SampleItemDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Извлекаем переданный id
+//    final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
+
+    final String itemId = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Item Details'),
       ),
-      body: const Center(
-        child: Text('More Information Here'),
+      body: Center(
+        child: Text('Item ID: sdasd выафывафыва $itemId'), // Отображаем id
       ),
     );
   }
