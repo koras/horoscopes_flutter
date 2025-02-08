@@ -1,0 +1,12 @@
+{
+    "appTitle": "My App",
+    "greeting": "Hello, {name}!",
+    "@greeting": {
+      "description": "Приветствие с именем пользователя",
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    }
+  }

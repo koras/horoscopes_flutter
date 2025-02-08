@@ -13,9 +13,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
-    sdk: flutter
-  intl: ^0.17.0  # Используйте последнюю версию
+    sdk: flutter 
   pedantic: ^1.11.0
+  intl: ^0.18.1
   dio: ^5.4.0  # Проверь актуальную версию на pub.dev
   flutter_svg: ^2.0.0+1  # Убедитесь, что используете последнюю версию
 
@@ -27,10 +27,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  # Enable generation of localized Strings from arb files.
   generate: true
-
+flutter_intl:
+  enabled: true
+  class_name: AppLocalizations
+  
   assets:
     # Add assets from the images directory to the application.
     - assets/images/

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'country_detail_page.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Country extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Country Flags',
+      localizationsDelegates: [AppLocalizations.delegate],
+      supportedLocales: [
+        // Locale('ru'), // English
+        Locale('en'), // English
+        Locale('es'), // Spanish
+      ],
       theme: ThemeData(primarySwatch: Colors.blue),
       home: CountryListPage(),
     );
