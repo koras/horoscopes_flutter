@@ -33,4 +33,11 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/images/zodiac/
+    - assets/images/zodiac/leo.png
+    - assets/images/zodiac/capricorn.png
+    - assets/images/zodiac/gemini.png
+    - assets/images/zodiac/cancer.png
+    - assets/images/zodiac/aries.png
+    - assets/images/zodiac/aquarius.png
     - assets/langs/

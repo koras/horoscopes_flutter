@@ -31,30 +31,6 @@ class CountryListPage extends StatefulWidget {
 }
 
 class _CountryListPageState extends State<CountryListPage> {
-  Map<String, dynamic> zodiac = {
-    'aquarius': {
-      'img': 'assets/images/zodiac/aquarius.png',
-      'name': 'aquarius'
-    },
-    'aries': {'img': 'assets/images/zodiac/aries.png', 'name': 'aquarius'},
-    'cancer': {'img': 'assets/images/zodiac/cancer.png', 'name': 'aquarius'},
-    'capricorn': {
-      'img': 'assets/images/zodiac/capricorn.png',
-      'name': 'aquarius'
-    },
-    'gemini': {'img': 'assets/images/zodiac/gemini.png', 'name': 'aquarius'},
-    'leo': {'img': 'assets/images/zodiac/leo.png', 'name': 'aquarius'},
-    'libra': {'img': 'assets/images/zodiac/libra.png', 'name': 'aquarius'},
-    'pisces': {'img': 'assets/images/zodiac/pisces.png', 'name': 'aquarius'},
-    'sagitarius': {
-      'img': 'assets/images/zodiac/sagitarius.png',
-      'name': 'aquarius'
-    },
-    'scorpio': {'img': 'assets/images/zodiac/scorpio.png', 'name': 'aquarius'},
-    'taurus': {'img': 'assets/images/zodiac/taurus.png', 'name': 'aquarius'},
-    'virgo': {'img': 'assets/images/zodiac/virgo.png', 'name': 'aquarius'},
-  };
-
   List<dynamic> countries = [];
   List<dynamic> filteredCountries = [];
   TextEditingController searchController = TextEditingController();
@@ -91,9 +67,25 @@ class _CountryListPageState extends State<CountryListPage> {
   @override
   Widget build(BuildContext context) {
     // print(context.locale.toString());
+    final Map<String, dynamic> zodiac = {
+      'aquarius': {'img': 'images/zodiac/aquarius.png', 'name': 'aquarius'},
+      'aries': {'img': 'images/zodiac/aries.png', 'name': 'aries'},
+      'cancer': {'img': 'images/zodiac/cancer.png', 'name': 'cancer'},
+      'capricorn': {'img': 'images/zodiac/capricorn.png', 'name': 'capricorn'},
+      'gemini': {'img': 'images/zodiac/gemini.png', 'name': 'gemini'},
+      'leo': {'img': 'images/zodiac/leo.png', 'name': 'leo'},
+      'libra': {'img': 'images/zodiac/libra.png', 'name': 'libra'},
+      'pisces': {'img': 'images/zodiac/pisces.png', 'name': 'pisces'},
+      'sagittarius': {
+        'img': 'images/zodiac/sagittarius.png',
+        'name': 'sagittarius'
+      },
+      'scorpio': {'img': 'images/zodiac/scorpio.png', 'name': 'scorpio'},
+      'taurus': {'img': 'images/zodiac/taurus.png', 'name': 'taurus'},
+      'virgo': {'img': 'images/zodiac/virgo.png', 'name': 'virgo'},
+    };
 
     return Scaffold(
-      //  appBar: AppBar(title: Text('Choose a Country')),
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.helloWorld)),
       body: Column(
         children: [
@@ -102,33 +94,63 @@ class _CountryListPageState extends State<CountryListPage> {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
-                labelText: 'search_country'.tr(),
-
-                //    labelText: Text(AppLocalizations.of(context)!.helloWorld),
+                labelText: 'search_country'.toString(),
               ),
               onChanged: filterCountries,
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredCountries.length,
-              itemBuilder: (context, index) {
-                var country = filteredCountries[index];
-                return ListTile(
-                  title: Text(country['name']['common']),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CountryDetailPage(
-                        countryName: country['name']['common'],
+            child: GridView.count(
+              crossAxisCount: 3,
+              children: zodiac.entries.map((entry) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ZodiacDetailScreen(zodiacSign: entry.key),
                       ),
+                    );
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          entry.value['img'],
+                          width: 100,
+                          height: 100,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          entry.value['name'],
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
                     ),
                   ),
                 );
-              },
+              }).toList(),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ZodiacDetailScreen extends StatelessWidget {
+  final String zodiacSign;
+
+  ZodiacDetailScreen({required this.zodiacSign});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(zodiacSign)),
+      body: Center(
+        child: Text('Details for $zodiacSign'),
       ),
     );
   }

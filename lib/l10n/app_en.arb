@@ -1,4 +1,17 @@
 {
+  "aquarius": "Aquarius",
+  "aries":"Aries",
+  "cancer":"Cancer",
+  "capricorn":"Capricorn",
+  "gemini":"Gemini",
+  "leo":"Leo",
+  "libra":"Libra",
+  "pisces":"Pisces",
+  "sagittarius":"Sagitarius",
+  "scorpio":"Scorpio",
+  "taurus":"Taurus",
+  "virgo":"Virgo",
+   
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
     "helloWorld": "Hello World! 111",
