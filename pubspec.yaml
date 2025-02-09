@@ -12,12 +12,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter 
   pedantic: ^1.11.0
-  intl: ^0.18.1
+  
+  intl: any
   dio: ^5.4.0  # Проверь актуальную версию на pub.dev
   flutter_svg: ^2.0.0+1  # Убедитесь, что используете последнюю версию
+  easy_localization: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -27,11 +27,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true
-flutter_intl:
-  enabled: true
-  class_name: AppLocalizations
+
+  generate: true # Add this line
   
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/langs/

@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'country_detail_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class Country extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Country Flags',
-      localizationsDelegates: [AppLocalizations.delegate],
-      supportedLocales: [
-        // Locale('ru'), // English
-        Locale('en'), // English
-        Locale('es'), // Spanish
+      //    localizationsDelegates: context.localizationDelegates,
+      localizationsDelegates: [
+        AppLocalizations.delegate, // Add this line
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
+      //  localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: ThemeData(primarySwatch: Colors.blue),
+      //   locale: context.locale,
       home: CountryListPage(),
     );
   }
@@ -27,18 +32,27 @@ class CountryListPage extends StatefulWidget {
 
 class _CountryListPageState extends State<CountryListPage> {
   Map<String, dynamic> zodiac = {
-    'aquarius': {'img': 'assets/images/zodiac/aquarius.png'},
-    'aries': {'img': 'assets/images/zodiac/aries.png'},
-    'cancer': {'img': 'assets/images/zodiac/cancer.png'},
-    'capricorn': {'img': 'assets/images/zodiac/capricorn.png'},
-    'gemini': {'img': 'assets/images/zodiac/gemini.png'},
-    'leo': {'img': 'assets/images/zodiac/leo.png'},
-    'libra': {'img': 'assets/images/zodiac/libra.png'},
-    'pisces': {'img': 'assets/images/zodiac/pisces.png'},
-    'sagitarius': {'img': 'assets/images/zodiac/sagitarius.png'},
-    'scorpio': {'img': 'assets/images/zodiac/scorpio.png'},
-    'taurus': {'img': 'assets/images/zodiac/taurus.png'},
-    'virgo': {'img': 'assets/images/zodiac/virgo.png'},
+    'aquarius': {
+      'img': 'assets/images/zodiac/aquarius.png',
+      'name': 'aquarius'
+    },
+    'aries': {'img': 'assets/images/zodiac/aries.png', 'name': 'aquarius'},
+    'cancer': {'img': 'assets/images/zodiac/cancer.png', 'name': 'aquarius'},
+    'capricorn': {
+      'img': 'assets/images/zodiac/capricorn.png',
+      'name': 'aquarius'
+    },
+    'gemini': {'img': 'assets/images/zodiac/gemini.png', 'name': 'aquarius'},
+    'leo': {'img': 'assets/images/zodiac/leo.png', 'name': 'aquarius'},
+    'libra': {'img': 'assets/images/zodiac/libra.png', 'name': 'aquarius'},
+    'pisces': {'img': 'assets/images/zodiac/pisces.png', 'name': 'aquarius'},
+    'sagitarius': {
+      'img': 'assets/images/zodiac/sagitarius.png',
+      'name': 'aquarius'
+    },
+    'scorpio': {'img': 'assets/images/zodiac/scorpio.png', 'name': 'aquarius'},
+    'taurus': {'img': 'assets/images/zodiac/taurus.png', 'name': 'aquarius'},
+    'virgo': {'img': 'assets/images/zodiac/virgo.png', 'name': 'aquarius'},
   };
 
   List<dynamic> countries = [];
@@ -76,15 +90,22 @@ class _CountryListPageState extends State<CountryListPage> {
 
   @override
   Widget build(BuildContext context) {
+    // print(context.locale.toString());
+
     return Scaffold(
-      appBar: AppBar(title: Text('Choose a Country')),
+      //  appBar: AppBar(title: Text('Choose a Country')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.helloWorld)),
       body: Column(
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
             child: TextField(
               controller: searchController,
-              decoration: InputDecoration(labelText: 'Search country'),
+              decoration: InputDecoration(
+                labelText: 'search_country'.tr(),
+
+                //    labelText: Text(AppLocalizations.of(context)!.helloWorld),
+              ),
               onChanged: filterCountries,
             ),
           ),

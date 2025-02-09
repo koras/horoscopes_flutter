@@ -21,7 +21,7 @@ class _CountryDetailPageState extends State<CountryDetailPage> {
 
   Future<void> fetchCountryDetails() async {
     try {
-      print('https://restcountries.com/v3.1/name/${widget.countryName}');
+      print('пуе  https://restcountries.com/v3.1/name/${widget.countryName}');
       var response = await Dio()
           .get('https://restcountries.com/v3.1/name/${widget.countryName}');
       setState(() {

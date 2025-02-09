@@ -1,6 +1,7 @@
 {
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
+    "helloWorld": "Hello World! 111",
     "@greeting": {
       "description": "Приветствие с именем пользователя",
       "placeholders": {

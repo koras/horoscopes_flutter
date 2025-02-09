@@ -1,0 +1,6 @@
+{
+    "hello": "Привет",
+    "welcome": "Добро пожаловать, {name}!",
+    "searchCountry": "Поиск страны",
+    "search_country": "Поиск страны"
+  }
