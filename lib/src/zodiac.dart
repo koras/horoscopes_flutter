@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'country_detail_page.dart';
+import 'zodiac_detail.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class Country extends StatelessWidget {
+class Zodiac extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,20 +19,45 @@ class Country extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      locale: const Locale('ru'), // Устанавливаем сохраненную локаль
       //  localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: ThemeData(primarySwatch: Colors.blue),
       //   locale: context.locale,
-      home: CountryListPage(),
+      home: ZodiacListPage(),
     );
   }
 }
 
-class CountryListPage extends StatefulWidget {
+class ZodiacListPage extends StatefulWidget {
+  final Map<String, dynamic> zodiac = {
+    'aquarius': {
+      'img': 'assets/images/zodiac/aquarius.png',
+      'name': 'aquarius'
+    },
+    'aries': {'img': 'assets/images/zodiac/aries.png', 'name': 'aries'},
+    'cancer': {'img': 'assets/images/zodiac/cancer.png', 'name': 'cancer'},
+    'capricorn': {
+      'img': 'assets/images/zodiac/capricorn.png',
+      'name': 'capricorn'
+    },
+    'gemini': {'img': 'assets/images/zodiac/gemini.png', 'name': 'gemini'},
+    'leo': {'img': 'assets/images/zodiac/leo.png', 'name': 'leo'},
+    'libra': {'img': 'assets/images/zodiac/libra.png', 'name': 'libra'},
+    'pisces': {'img': 'assets/images/zodiac/pisces.png', 'name': 'pisces'},
+    'sagittarius': {
+      'img': 'assets/images/zodiac/sagittarius.png',
+      'name': 'sagittarius'
+    },
+    'scorpio': {'img': 'assets/images/zodiac/scorpio.png', 'name': 'scorpio'},
+    'taurus': {'img': 'assets/images/zodiac/taurus.png', 'name': 'taurus'},
+    'virgo': {'img': 'assets/images/zodiac/virgo.png', 'name': 'virgo'},
+  };
+
   @override
   _CountryListPageState createState() => _CountryListPageState();
 }
 
-class _CountryListPageState extends State<CountryListPage> {
+class _CountryListPageState extends State<ZodiacListPage> {
   List<dynamic> countries = [];
   List<dynamic> filteredCountries = [];
   TextEditingController searchController = TextEditingController();
@@ -38,78 +65,59 @@ class _CountryListPageState extends State<CountryListPage> {
   @override
   void initState() {
     super.initState();
-    fetchCountries();
+    // fetchCountries();
   }
 
-  Future<void> fetchCountries() async {
-    try {
-      var response = await Dio().get('https://restcountries.com/v3.1/all');
-      setState(() {
-        countries = response.data;
-        filteredCountries = countries;
-      });
-    } catch (e) {
-      print('Error fetching countries: $e');
-    }
+  final Map<String, String Function(BuildContext)> translations = {
+    'virgo': (context) => AppLocalizations.of(context)!.virgo,
+    'taurus': (context) => AppLocalizations.of(context)!.taurus,
+    // Добавьте другие ключи по мере необходимости
+  };
+  String translate(String key, BuildContext context) {
+    return translations.containsKey(key) ? translations[key]!(context) : key;
   }
+  // Future<void> fetchCountries() async {
+  //   try {
+  //     var response = await Dio().get('https://restcountries.com/v3.1/all');
+  //     setState(() {
+  //       countries = response.data;
+  //       filteredCountries = countries;
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching countries: $e');
+  //   }
+  // }
 
-  void filterCountries(String query) {
-    setState(() {
-      filteredCountries = countries
-          .where((country) => country['name']['common']
-              .toString()
-              .toLowerCase()
-              .contains(query.toLowerCase()))
-          .toList();
-    });
-  }
+  // void filterCountries(String query) {
+  //   setState(() {
+  //     filteredCountries = countries
+  //         .where((country) => country['name']['common']
+  //             .toString()
+  //             .toLowerCase()
+  //             .contains(query.toLowerCase()))
+  //         .toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     // print(context.locale.toString());
-    final Map<String, dynamic> zodiac = {
-      'aquarius': {'img': 'images/zodiac/aquarius.png', 'name': 'aquarius'},
-      'aries': {'img': 'images/zodiac/aries.png', 'name': 'aries'},
-      'cancer': {'img': 'images/zodiac/cancer.png', 'name': 'cancer'},
-      'capricorn': {'img': 'images/zodiac/capricorn.png', 'name': 'capricorn'},
-      'gemini': {'img': 'images/zodiac/gemini.png', 'name': 'gemini'},
-      'leo': {'img': 'images/zodiac/leo.png', 'name': 'leo'},
-      'libra': {'img': 'images/zodiac/libra.png', 'name': 'libra'},
-      'pisces': {'img': 'images/zodiac/pisces.png', 'name': 'pisces'},
-      'sagittarius': {
-        'img': 'images/zodiac/sagittarius.png',
-        'name': 'sagittarius'
-      },
-      'scorpio': {'img': 'images/zodiac/scorpio.png', 'name': 'scorpio'},
-      'taurus': {'img': 'images/zodiac/taurus.png', 'name': 'taurus'},
-      'virgo': {'img': 'images/zodiac/virgo.png', 'name': 'virgo'},
-    };
 
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.helloWorld)),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                labelText: 'search_country'.toString(),
-              ),
-              onChanged: filterCountries,
-            ),
-          ),
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
-              children: zodiac.entries.map((entry) {
+              children: widget.zodiac.entries.map((entry) {
                 return InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ZodiacDetailScreen(zodiacSign: entry.key),
+                            ZodiacDetail(zodiacName: entry.key),
                       ),
                     );
                   },
@@ -124,7 +132,9 @@ class _CountryListPageState extends State<CountryListPage> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          entry.value['name'],
+                          translate(entry.value['name'], context),
+                          //   AppLocalizations.of(context)!.helloWorld,
+
                           style: TextStyle(fontSize: 16),
                         ),
                       ],

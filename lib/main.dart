@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
-import 'src/country.dart';
+import 'src/zodiac.dart';
 //import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
@@ -21,10 +21,14 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('ru')], // Поддерживаемые языки
+      supportedLocales: [
+        Locale('en'),
+      
+       Locale('ru')], // Поддерживаемые языки
       path: 'assets/l10n', // Путь к файлам переводов
-      fallbackLocale: Locale('en'), // Язык по умолчанию
-      child: Country(),
+      fallbackLocale: Locale('ru'), // Язык по умолчанию
+
+      child: Zodiac(),
     ),
   );
 }
