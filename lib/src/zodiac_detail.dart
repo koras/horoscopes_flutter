@@ -40,36 +40,77 @@ class _ZodiacDetailPageState extends State<ZodiacDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.zodiacName)),
-      body: countryData == null
-          ? Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Image.network(
-                  //   countryData!['flags']['png'],
-                  //   height: 150,
-                  // ),
-                  SizedBox(height: 16),
-                  // Text('Country: ${countryData!['name']['common']}',
-                  //     style: TextStyle(fontSize: 20)),
-                  Text(countryData!['data']['text'],
-                      style: TextStyle(fontSize: 20)),
+    return TabsExample();
+  }
+}
 
-                  // Text(
-                  //     'Capital: ${countryData!['capital']?.join(", ") ?? "N/A"}'),
-                  // Text('Population: ${countryData!['population']}'),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Back'),
+class TabsExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3, // Количество вкладок
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Вкладки'),
+        ),
+        body: Column(
+          children: [
+            // Блок с картинкой и текстом
+            Container(
+              padding: EdgeInsets.all(16), // Отступы
+              color: const Color.fromARGB(255, 71, 71, 71), // Цвет фона
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/zodiac/aries.png', // Путь к картинке
+                    width: 50, // Ширина картинки
+                    height: 50, // Высота картинки
+                  ),
+                  SizedBox(width: 16), // Отступ между картинкой и текстом
+                  Expanded(
+                    child: Text(
+                      'Это пример текста рядом с картинкой. '
+                      'Он может быть длинным и занимать несколько строк.',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                 ],
               ),
             ),
+            // Табы (кнопки)
+            Container(
+              color:
+                  const Color.fromARGB(255, 99, 99, 99), // Цвет фона для табов
+              child: TabBar(
+                tabs: [
+                  Tab(text: 'Сегодня'), // Вкладка "Сегодня"
+                  Tab(text: 'Завтра'), // Вкладка "Завтра"
+                  Tab(text: 'Неделя'), // Вкладка "Месяц"
+                ],
+                labelColor: Colors.white, // Цвет текста активной вкладки
+                unselectedLabelColor:
+                    Colors.white70, // Цвет текста неактивной вкладки
+                indicatorColor: Colors.white, // Цвет индикатора
+              ),
+            ),
+            // Контент вкладок
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Center(
+                      child:
+                          Text('Контент для Завтра')), // Контент для "Завтра"
+                  Center(
+                      child:
+                          Text('Контент для Сегодня')), // Контент для "Сегодня"
+                  Center(
+                      child: Text('Контент для Месяц')), // Контент для "Месяц"
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

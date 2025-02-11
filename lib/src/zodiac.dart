@@ -9,6 +9,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class Zodiac extends StatelessWidget {
+  final ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark, // Тёмная тема
+    primaryColor: Colors.blueGrey, // Основной цвет
+    scaffoldBackgroundColor:
+        const Color.fromARGB(255, 119, 119, 119), // Фон Scaffold
+    appBarTheme: AppBarTheme(
+      color: Color.fromARGB(255, 143, 143, 143), // Цвет AppBar
+    ),
+    // Дополнительные настройки (например, шрифты, кнопки и т.д.)
+
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.blueGrey[200], // Цвет кнопок
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +43,7 @@ class Zodiac extends StatelessWidget {
       //  locale: const Locale('en'),
 //      locale: const Locale('ru'), // Устанавливаем сохраненную локаль
       //  localizationsDelegates: AppLocalizations.localizationsDelegates,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: darkTheme,
       //   locale: context.locale,
       home: ZodiacListPage(),
     );
@@ -74,37 +89,6 @@ class _CountryListPageState extends State<ZodiacListPage> {
     super.initState();
     // fetchCountries();
   }
-
-  // final Map<String, String Function(BuildContext)> translations = {
-  //   'virgo': (context) => AppLocalizations.of(context)!.virgo,
-  //   'taurus': (context) => AppLocalizations.of(context)!.taurus,
-  //   // Добавьте другие ключи по мере необходимости
-  // };
-  // String translate(String key, BuildContext context) {
-  //   return translations.containsKey(key) ? translations[key]!(context) : key;
-  // }
-  // Future<void> fetchCountries() async {
-  //   try {
-  //     var response = await Dio().get('https://restcountries.com/v3.1/all');
-  //     setState(() {
-  //       countries = response.data;
-  //       filteredCountries = countries;
-  //     });
-  //   } catch (e) {
-  //     print('Error fetching countries: $e');
-  //   }
-  // }
-
-  // void filterCountries(String query) {
-  //   setState(() {
-  //     filteredCountries = countries
-  //         .where((country) => country['name']['common']
-  //             .toString()
-  //             .toLowerCase()
-  //             .contains(query.toLowerCase()))
-  //         .toList();
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
