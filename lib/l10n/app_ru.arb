@@ -13,7 +13,7 @@
   "virgo":"Дева",
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
-    "helloWorld": "Hello World! 333",
+    "helloWorld": "Hello World! 333 ru",
     "@greeting": {
       "description": "Приветствие с именем пользователя",
       "placeholders": {

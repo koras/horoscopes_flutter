@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'country_detail_page.dart';
 import 'zodiac_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
@@ -19,7 +20,13 @@ class Zodiac extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: const Locale('ru'), // Устанавливаем сохраненную локаль
+
+      //   localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+
+      //  locale: const Locale('en'),
+//      locale: const Locale('ru'), // Устанавливаем сохраненную локаль
       //  localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: ThemeData(primarySwatch: Colors.blue),
       //   locale: context.locale,
@@ -68,14 +75,14 @@ class _CountryListPageState extends State<ZodiacListPage> {
     // fetchCountries();
   }
 
-  final Map<String, String Function(BuildContext)> translations = {
-    'virgo': (context) => AppLocalizations.of(context)!.virgo,
-    'taurus': (context) => AppLocalizations.of(context)!.taurus,
-    // Добавьте другие ключи по мере необходимости
-  };
-  String translate(String key, BuildContext context) {
-    return translations.containsKey(key) ? translations[key]!(context) : key;
-  }
+  // final Map<String, String Function(BuildContext)> translations = {
+  //   'virgo': (context) => AppLocalizations.of(context)!.virgo,
+  //   'taurus': (context) => AppLocalizations.of(context)!.taurus,
+  //   // Добавьте другие ключи по мере необходимости
+  // };
+  // String translate(String key, BuildContext context) {
+  //   return translations.containsKey(key) ? translations[key]!(context) : key;
+  // }
   // Future<void> fetchCountries() async {
   //   try {
   //     var response = await Dio().get('https://restcountries.com/v3.1/all');
@@ -105,6 +112,7 @@ class _CountryListPageState extends State<ZodiacListPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.helloWorld)),
+      // Text('helloWorld'.tr())),
       body: Column(
         children: [
           Expanded(
@@ -132,7 +140,8 @@ class _CountryListPageState extends State<ZodiacListPage> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          translate(entry.value['name'], context),
+                          entry.value['name'],
+                          //  translate(entry.value['name'], context),
                           //   AppLocalizations.of(context)!.helloWorld,
 
                           style: TextStyle(fontSize: 16),

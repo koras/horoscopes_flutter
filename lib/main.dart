@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'src/zodiac.dart';
 //import 'package:easy_localization/easy_localization.dart';
 
@@ -18,16 +19,30 @@ void main() async {
   // SettingsView.
   // runApp(MyApp(settingsController: settingsController));
   //runApp(Country());
+  Future<void> saveLocale(Locale locale) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('en', locale.languageCode);
+  }
+
+  Future<Locale?> getSavedLocale() async {
+    final prefs = await SharedPreferences.getInstance();
+    final localeCode = prefs.getString('en');
+    if (localeCode != null) {
+      return Locale(localeCode);
+    }
+    return null;
+  }
+
+  final savedLocale = await getSavedLocale();
 
   runApp(
     EasyLocalization(
-      supportedLocales: [
-        Locale('en'),
-      
-       Locale('ru')], // Поддерживаемые языки
-      path: 'assets/l10n', // Путь к файлам переводов
-      fallbackLocale: Locale('ru'), // Язык по умолчанию
+      supportedLocales: [Locale('en'), Locale('ru')], // Поддерживаемые языки
+      path: 'assets/langs', // Путь к файлам переводов
 
+      fallbackLocale: Locale('en'), // Язык по умолчанию
+
+      startLocale: const Locale('en'), // Установите  локаль
       child: Zodiac(),
     ),
   );

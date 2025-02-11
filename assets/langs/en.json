@@ -14,7 +14,7 @@
    
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
-    "helloWorld": "Hello World! 155511",
+    "helloWorld": "Hello World! en en",
     "@greeting": {
       "description": "Приветствие с именем пользователя",
       "placeholders": {
