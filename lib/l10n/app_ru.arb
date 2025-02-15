@@ -1,5 +1,6 @@
 {
   "aquarius": "Водолей",
+  "title_chinese_horoscope": "Китайский гороскоп:",
   "aries":"Овен",
   "cancer":"Рак",
   "capricorn":"Козерог",
@@ -11,6 +12,8 @@
   "scorpio":"Скорпион",
   "taurus":"Телец",
   "virgo":"Дева",
+
+
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
     "helloWorld": "Hello World! 333 ru",

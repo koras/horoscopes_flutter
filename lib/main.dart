@@ -42,7 +42,7 @@ void main() async {
 
       fallbackLocale: Locale('en'), // Язык по умолчанию
 
-      startLocale: const Locale('en'), // Установите  локаль
+      startLocale: const Locale('ru'), // Установите  локаль
       child: Zodiac(),
     ),
   );

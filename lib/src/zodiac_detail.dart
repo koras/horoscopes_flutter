@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
 
@@ -87,7 +88,6 @@ class _ZodiacScreenState extends State<ZodiacScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-
     _loadUserChoice();
   }
 
@@ -104,7 +104,20 @@ class _ZodiacScreenState extends State<ZodiacScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: _title(_selectedIndex),
+        title: _title(context, _selectedIndex),
+        centerTitle: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color.fromARGB(255, 55, 55, 56),
+                const Color.fromARGB(255, 55, 37, 58)
+              ], // Градиент для красоты
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -129,7 +142,9 @@ class _ZodiacScreenState extends State<ZodiacScreen>
                               margin: EdgeInsets.symmetric(horizontal: 2.0),
                               decoration: BoxDecoration(color: Colors.amber),
                               child: Text(
-                                'text $i',
+                                //    AppLocalizations.of(context)!.i,
+                                _getLocalizedZodiacName(
+                                    context, i), // Используем функцию
                                 style: TextStyle(fontSize: 16.0),
                               )));
                     },
@@ -194,8 +209,45 @@ Widget _currentZodiac(String zodiac) {
   );
 }
 
-Widget _title(String zodiac) {
-  return Center(
-    child: Text(': $zodiac'),
+Widget _title(BuildContext context, String key) {
+  String zodiac = _getLocalizedZodiacName(context, key);
+  String title_chinese_horoscope =
+      AppLocalizations.of(context)!.title_chinese_horoscope;
+  return Padding(
+    padding: const EdgeInsets.only(left: 16.0), // Отступ слева
+    child: Align(
+      alignment: Alignment.centerLeft, // Выравнивание по левому краю
+      child: Text(
+        '$title_chinese_horoscope $zodiac',
+        style: TextStyle(
+          fontSize: 20, // Размер текста
+          fontWeight: FontWeight.bold, // Жирный шрифт
+          color: const Color.fromARGB(255, 255, 217, 0), // Цвет текста
+          fontStyle: FontStyle.normal, // Курсив
+        ),
+      ),
+    ),
   );
+}
+
+String _getLocalizedZodiacName(BuildContext context, String key) {
+  final localizations = AppLocalizations.of(context)!;
+
+  final Map<String, String> zodiacTranslations = {
+    'aquarius': localizations.aquarius,
+    'aries': localizations.aries,
+    'cancer': localizations.cancer,
+    'capricorn': localizations.capricorn,
+    'gemini': localizations.gemini,
+    'leo': localizations.leo,
+    'libra': localizations.libra,
+    'pisces': localizations.pisces,
+    'sagittarius': localizations.sagittarius,
+    'scorpio': localizations.scorpio,
+    'taurus': localizations.taurus,
+    'virgo': localizations.virgo,
+  };
+
+  return zodiacTranslations[key] ??
+      key; // Если ключ не найден, возвращаем сам key
 }
