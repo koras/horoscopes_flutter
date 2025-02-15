@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'zodiac_data.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel;
 
 class ZodiacDetail extends StatefulWidget {
   final String zodiacName;
+  // final Map<String, dynamic> zodiacs;
 
-  ZodiacDetail({required this.zodiacName});
+  ZodiacDetail({
+    required this.zodiacName,
+    //required this.zodiacs
+  });
 
   @override
   _ZodiacDetailPageState createState() => _ZodiacDetailPageState();
@@ -40,77 +48,154 @@ class _ZodiacDetailPageState extends State<ZodiacDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return TabsExample();
+    return ZodiacScreen();
   }
 }
 
-class TabsExample extends StatelessWidget {
+class ZodiacScreen extends StatefulWidget {
+  @override
+  _ZodiacScreenState createState() => _ZodiacScreenState();
+}
+
+class _ZodiacScreenState extends State<ZodiacScreen>
+    with SingleTickerProviderStateMixin {
+  String _selectedIndex = ''; // Индекс выбранного элемента в слайдере
+
+  Future<void> _saveUserChoice(String choice) async {
+    print('сохранили $choice ');
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_choice', choice);
+  }
+
+  /// Загрузка сохраненного выбора
+  Future<void> _loadUserChoice() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedChoice = prefs.getString('user_choice');
+
+    if (savedChoice != null) {
+      setState(() {
+        _selectedIndex = savedChoice;
+      });
+    }
+  }
+
+  int _currentIndex = 0;
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+
+    _loadUserChoice();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+// https://pub.dev/packages/carousel_slider
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3, // Количество вкладок
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Вкладки'),
-        ),
-        body: Column(
-          children: [
-            // Блок с картинкой и текстом
-            Container(
-              padding: EdgeInsets.all(16), // Отступы
-              color: const Color.fromARGB(255, 71, 71, 71), // Цвет фона
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/images/zodiac/aries.png', // Путь к картинке
-                    width: 50, // Ширина картинки
-                    height: 50, // Высота картинки
-                  ),
-                  SizedBox(width: 16), // Отступ между картинкой и текстом
-                  Expanded(
-                    child: Text(
-                      'Это пример текста рядом с картинкой. '
-                      'Он может быть длинным и занимать несколько строк.',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
+    List<String> zodiacKeys = zodiacs.keys.toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: _title(_selectedIndex),
+      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            carousel.CarouselSlider(
+                items: zodiacKeys.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = i;
+                              _tabController.animateTo(
+                                  0); // Переключение на первую вкладку
+                              print('Тап обнаружен!' + i);
+                              _saveUserChoice(i);
+                            });
+                          },
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.symmetric(horizontal: 2.0),
+                              decoration: BoxDecoration(color: Colors.amber),
+                              child: Text(
+                                'text $i',
+                                style: TextStyle(fontSize: 16.0),
+                              )));
+                    },
+                  );
+                }).toList(),
+                options: carousel.CarouselOptions(
+                  height: 60,
+
+                  aspectRatio: 1.0,
+                  viewportFraction: 1 /
+                      5.5, // Доля видимой области, которую занимает каждый слайд. Например, 0.8 означает, что 80% ширины экрана будет занято слайдом.
+                  initialPage: 0, //  Индекс начального слайда.
+                  enableInfiniteScroll: false,
+                  reverse: false,
+                  autoPlay:
+                      false, //  Включает автоматическую прокрутку слайдов.
+                  enlargeCenterPage: false,
+                  enlargeFactor: 0.3,
+                  padEnds: false,
+                  // onPageChanged: callbackFunction,// Коллбэк, который вызывается при изменении текущего слайда.
+                  scrollDirection: Axis.horizontal,
+                )),
+            _currentZodiac(_selectedIndex),
+            TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(text: 'Сегодня'),
+                Tab(text: 'Завтра'),
+                Tab(text: 'Неделя'),
+              ],
             ),
-            // Табы (кнопки)
-            Container(
-              color:
-                  const Color.fromARGB(255, 99, 99, 99), // Цвет фона для табов
-              child: TabBar(
-                tabs: [
-                  Tab(text: 'Сегодня'), // Вкладка "Сегодня"
-                  Tab(text: 'Завтра'), // Вкладка "Завтра"
-                  Tab(text: 'Неделя'), // Вкладка "Месяц"
-                ],
-                labelColor: Colors.white, // Цвет текста активной вкладки
-                unselectedLabelColor:
-                    Colors.white70, // Цвет текста неактивной вкладки
-                indicatorColor: Colors.white, // Цвет индикатора
-              ),
-            ),
-            // Контент вкладок
             Expanded(
               child: TabBarView(
+                controller: _tabController,
+                // physics: AlwaysScrollableScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 children: [
-                  Center(
-                      child:
-                          Text('Контент для Завтра')), // Контент для "Завтра"
-                  Center(
-                      child:
-                          Text('Контент для Сегодня')), // Контент для "Сегодня"
-                  Center(
-                      child: Text('Контент для Месяц')), // Контент для "Месяц"
+                  _buildTabContent('Сегодня', _selectedIndex),
+                  _buildTabContent('Завтра', _selectedIndex),
+                  _buildTabContent('Неделя', _selectedIndex),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ]),
     );
   }
+}
+
+/**
+ * Основной контент
+ */
+Widget _buildTabContent(String period, String zodiac) {
+  return Center(
+    child: Text('$period: $zodiac'),
+  );
+}
+
+Widget _currentZodiac(String zodiac) {
+  print('новый знак $zodiac');
+  return Center(
+    child: Text(': $zodiac'),
+  );
+}
+
+Widget _title(String zodiac) {
+  return Center(
+    child: Text(': $zodiac'),
+  );
 }

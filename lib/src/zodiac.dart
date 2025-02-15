@@ -108,8 +108,9 @@ class _CountryListPageState extends State<ZodiacListPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ZodiacDetail(zodiacName: entry.key),
+                        builder: (context) => ZodiacDetail(zodiacName: entry.key
+                            //, zodiacs: zodiac
+                            ),
                       ),
                     );
                   },
