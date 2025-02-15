@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
+import 'zodiac_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -51,29 +52,29 @@ class Zodiac extends StatelessWidget {
 }
 
 class ZodiacListPage extends StatefulWidget {
-  final Map<String, dynamic> zodiac = {
-    'aquarius': {
-      'img': 'assets/images/zodiac/aquarius.png',
-      'name': 'aquarius'
-    },
-    'aries': {'img': 'assets/images/zodiac/aries.png', 'name': 'aries'},
-    'cancer': {'img': 'assets/images/zodiac/cancer.png', 'name': 'cancer'},
-    'capricorn': {
-      'img': 'assets/images/zodiac/capricorn.png',
-      'name': 'capricorn'
-    },
-    'gemini': {'img': 'assets/images/zodiac/gemini.png', 'name': 'gemini'},
-    'leo': {'img': 'assets/images/zodiac/leo.png', 'name': 'leo'},
-    'libra': {'img': 'assets/images/zodiac/libra.png', 'name': 'libra'},
-    'pisces': {'img': 'assets/images/zodiac/pisces.png', 'name': 'pisces'},
-    'sagittarius': {
-      'img': 'assets/images/zodiac/sagittarius.png',
-      'name': 'sagittarius'
-    },
-    'scorpio': {'img': 'assets/images/zodiac/scorpio.png', 'name': 'scorpio'},
-    'taurus': {'img': 'assets/images/zodiac/taurus.png', 'name': 'taurus'},
-    'virgo': {'img': 'assets/images/zodiac/virgo.png', 'name': 'virgo'},
-  };
+  // final Map<String, dynamic> zodiac = {
+  //   'aquarius': {
+  //     'img': 'assets/images/zodiac/aquarius.png',
+  //     'name': 'aquarius'
+  //   },
+  //   'aries': {'img': 'assets/images/zodiac/aries.png', 'name': 'aries'},
+  //   'cancer': {'img': 'assets/images/zodiac/cancer.png', 'name': 'cancer'},
+  //   'capricorn': {
+  //     'img': 'assets/images/zodiac/capricorn.png',
+  //     'name': 'capricorn'
+  //   },
+  //   'gemini': {'img': 'assets/images/zodiac/gemini.png', 'name': 'gemini'},
+  //   'leo': {'img': 'assets/images/zodiac/leo.png', 'name': 'leo'},
+  //   'libra': {'img': 'assets/images/zodiac/libra.png', 'name': 'libra'},
+  //   'pisces': {'img': 'assets/images/zodiac/pisces.png', 'name': 'pisces'},
+  //   'sagittarius': {
+  //     'img': 'assets/images/zodiac/sagittarius.png',
+  //     'name': 'sagittarius'
+  //   },
+  //   'scorpio': {'img': 'assets/images/zodiac/scorpio.png', 'name': 'scorpio'},
+  //   'taurus': {'img': 'assets/images/zodiac/taurus.png', 'name': 'taurus'},
+  //   'virgo': {'img': 'assets/images/zodiac/virgo.png', 'name': 'virgo'},
+  // };
 
   @override
   _CountryListPageState createState() => _CountryListPageState();
@@ -102,7 +103,7 @@ class _CountryListPageState extends State<ZodiacListPage> {
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
-              children: widget.zodiac.entries.map((entry) {
+              children: zodiacs.entries.map((entry) {
                 return InkWell(
                   onTap: () {
                     Navigator.push(
