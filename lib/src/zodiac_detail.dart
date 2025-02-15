@@ -138,20 +138,39 @@ class _ZodiacScreenState extends State<ZodiacScreen>
                             });
                           },
                           child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.symmetric(horizontal: 2.0),
-                              decoration: BoxDecoration(color: Colors.amber),
-                              child: Text(
-                                //    AppLocalizations.of(context)!.i,
-                                _getLocalizedZodiacName(
-                                    context, i), // Используем функцию
-                                style: TextStyle(fontSize: 16.0),
-                              )));
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 2.0),
+                            decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 29, 29, 28)),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  zodiacs[i]['img'],
+                                  //   items[index]['image']!,
+                                  //   width: double.infinity,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      //    AppLocalizations.of(context)!.i,
+                                      _getLocalizedZodiacName(
+                                          context, i), // Используем функцию
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: const Color.fromARGB(
+                                            117, 255, 217, 0), // Цвет текста
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ));
                     },
                   );
                 }).toList(),
                 options: carousel.CarouselOptions(
-                  height: 60,
+                  height: 100,
 
                   aspectRatio: 1.0,
                   viewportFraction: 1 /
@@ -171,9 +190,9 @@ class _ZodiacScreenState extends State<ZodiacScreen>
             TabBar(
               controller: _tabController,
               tabs: [
-                Tab(text: 'Сегодня'),
-                Tab(text: 'Завтра'),
-                Tab(text: 'Неделя'),
+                Tab(text: AppLocalizations.of(context)!.today),
+                Tab(text: AppLocalizations.of(context)!.tomorrow),
+                Tab(text: AppLocalizations.of(context)!.weekly),
               ],
             ),
             Expanded(
@@ -182,9 +201,12 @@ class _ZodiacScreenState extends State<ZodiacScreen>
                 // physics: AlwaysScrollableScrollPhysics(),
                 physics: BouncingScrollPhysics(),
                 children: [
-                  _buildTabContent('Сегодня', _selectedIndex),
-                  _buildTabContent('Завтра', _selectedIndex),
-                  _buildTabContent('Неделя', _selectedIndex),
+                  _buildTabContent(
+                      AppLocalizations.of(context)!.today, _selectedIndex),
+                  _buildTabContent(
+                      AppLocalizations.of(context)!.tomorrow, _selectedIndex),
+                  _buildTabContent(
+                      AppLocalizations.of(context)!.weekly, _selectedIndex),
                 ],
               ),
             ),
@@ -232,7 +254,6 @@ Widget _title(BuildContext context, String key) {
 
 String _getLocalizedZodiacName(BuildContext context, String key) {
   final localizations = AppLocalizations.of(context)!;
-
   final Map<String, String> zodiacTranslations = {
     'aquarius': localizations.aquarius,
     'aries': localizations.aries,
@@ -247,7 +268,6 @@ String _getLocalizedZodiacName(BuildContext context, String key) {
     'taurus': localizations.taurus,
     'virgo': localizations.virgo,
   };
-
   return zodiacTranslations[key] ??
       key; // Если ключ не найден, возвращаем сам key
 }

@@ -13,6 +13,11 @@
   "taurus":"Телец",
   "virgo":"Дева",
 
+  "today":"Сегодня",
+  "tomorrow":"Завтра",
+  "weekly":"На неделю",
+
+
 
     "appTitle": "My App",
     "greeting": "Hello, {name}!",

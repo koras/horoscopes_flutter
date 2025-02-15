@@ -12,6 +12,11 @@
   "scorpio":"Scorpio",
   "taurus":"Taurus",
   "virgo":"Virgo",
+
+  
+  "today":"Today",
+  "tomorrow":"Tomorrow",
+  "weekly":"For the week",
    
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
