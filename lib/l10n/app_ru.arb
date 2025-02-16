@@ -1,4 +1,24 @@
 {
+
+  "compatibility": {
+    "love": "Любовь",
+    "money": "Деньги",
+    "travel": "Путешествия",
+    "interests": "Интересы",
+    "work": "Работа",
+    "compatibility": "Совместимость",
+    "energy": "Энергия",
+    "sex": "Секс",
+    "family": "Семья",
+    "friendship": "Дружба",
+    "growth": "Развитие",
+    "development": "Развитие",
+    "communication": "Общение",
+    "trust": "Доверие",
+    "loyalty": "Верность",
+    "conflicts": "Конфликты",
+    "ambitions": "Амбиции"
+  },
   "title_compatibility": "Совместимость по восточному гороскопу",
   "aquarius": "Водолей",
   "title_chinese_horoscope": "Китайский гороскоп:",

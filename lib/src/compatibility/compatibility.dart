@@ -19,6 +19,7 @@ class Compatibility extends StatefulWidget {
 }
 
 class _CompatibilityState extends State<Compatibility> {
+  Map<String, dynamic>? compatibilityInfo;
   // List<dynamic> countries = [];
 //  List<dynamic> filteredCountries = [];
 //  TextEditingController searchController = TextEditingController();
@@ -26,13 +27,52 @@ class _CompatibilityState extends State<Compatibility> {
   @override
   void initState() {
     super.initState();
-    // fetchCountries();
+    fetchCompatibilityDetails();
+  }
+
+  Future<void> fetchCompatibilityDetails() async {
+    try {
+      // print('пуе  https://restcountries.com/v3.1/name/${widget.zodiacName}');
+      // var response = await Dio()
+      //     .get('https://restcountries.com/v3.1/name/${widget.zodiacName}');
+      // setState(() {
+      //   countryData = response.data[0];
+      // });
+      compatibilityInfo = {
+        "aquarius": {
+          "aquarius": {
+            "love": 20,
+            "money": 13,
+            "travel": 54,
+            "interests": 36,
+            "work": 70,
+            "compatibility": 70,
+            "energy": 100,
+            "sex": 50,
+            "family": 62,
+            "friendship": 67,
+            "growth": 45,
+            "development": 36,
+            "communication": 37,
+            "trust": 82,
+            "loyalty": 67,
+            "conflicts": 80,
+            "ambitions": 88
+          }
+        }
+      };
+    } catch (e) {
+      print('Error fetching country details: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(context.locale.toString());
-
+    final aquariusData = compatibilityInfo?["aquarius"]?["aquarius"]!;
+    if (aquariusData == null) {
+      return Center(child: Text("Данные не найдены"));
+    }
+    print(aquariusData);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.title_compatibility),
@@ -57,15 +97,15 @@ class _CompatibilityState extends State<Compatibility> {
                         BouncingScrollPhysics(), // Для iOS-подобной прокрутки
                     child: Column(
                       children: [
-                        _circles(context, 'Любовь'),
-                        _circles(context, 'Деньги'),
-                        _circles(context, 'Путешествия'),
-                        _circles(context, 'Интересы'),
-                        _circles(context, 'Любовь'),
-                        _circles(context, 'Деньги'),
-                        _circles(context, 'Путешествия'),
-                        _circles(context, 'Интересы'),
+                        _circles(context, 'Любовь', 23),
+                        _circles(context, 'Деньги', 444),
+                        _circles(context, 'Путешествия', 55),
+                        _circles(context, 'Интересы', 66),
                       ],
+
+                      //       aquariusData.entries.map((entry) {
+                      //     return _circles(context, entry.key, entry.value);
+                      //   }).toList(),
                     ),
                   ),
                 ),
@@ -84,9 +124,13 @@ class _CompatibilityState extends State<Compatibility> {
   }
 }
 
-Widget _circles(BuildContext context, String text) {
-  final random = Random();
-  final _randomNumber = 20 + random.nextInt(81);
+Widget _circles(BuildContext context, String key, int value) {
+//  final random = Random();
+  // final _randomNumber = 20 + random.nextInt(81);
+  print(key);
+  print(value);
+
+  final _randomNumber = value.toDouble();
   final _randomNumberString = _randomNumber.toString() + '%';
 
   return Column(
@@ -99,10 +143,10 @@ Widget _circles(BuildContext context, String text) {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               //    AppLocalizations.of(context)!.i,
-              text, // Используем функцию
+              key, // Используем функцию
               style: const TextStyle(
                 fontSize: 14.0,
-                color: Color.fromARGB(117, 138, 135, 0), // Цвет текста
+                color: Color.fromARGB(117, 255, 252, 53), // Цвет текста
               ),
             ),
           ),
@@ -117,7 +161,7 @@ Widget _circles(BuildContext context, String text) {
                 Container(
                   height: 150,
                   width: 150,
-                  child: _buble(context, _randomNumber.toDouble()),
+                  child: _buble(context, _randomNumber),
                 ),
                 Text(
                   _randomNumberString,
@@ -210,21 +254,23 @@ List<InkWell> Sodiacs(BuildContext context) {
         // });
       },
       child: Card(
+        color: Colors.white, // Полупрозрачный белый цвет
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               entry.value['img'],
-              width: 30,
-              height: 20,
+              width: 50,
+              height: 50,
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
             Text(
-              entry.value['name'],
-              //  translate(entry.value['name'], context),
+              // entry.value['name'],
+              _getLocalizedZodiacName(context, entry.value['name']),
+              //   translate(entry.value['name'], context),
               //   AppLocalizations.of(context)!.helloWorld,
 
-              style: TextStyle(fontSize: 8),
+              style: const TextStyle(fontSize: 12, color: Colors.blue),
             ),
           ],
         ),
@@ -249,8 +295,8 @@ Widget _buble(BuildContext context, double _randomNumber) {
           cornerStyle: CornerStyle.bothCurve,
           maximumValue: 100,
           radius: '100%',
-          innerRadius: '90%', // Внутренний радиус (делает круг тонким)
-          gap: '2%',
+          innerRadius: '70%', // Внутренний радиус (делает круг тонким)
+          gap: '55%',
           pointColorMapper: (ChartData data, _) {
             if (data.value < 50) return Colors.red;
             if (data.value < 75) return Colors.orange;
@@ -258,4 +304,24 @@ Widget _buble(BuildContext context, double _randomNumber) {
           }),
     ],
   );
+}
+
+String _getLocalizedZodiacName(BuildContext context, String key) {
+  final localizations = AppLocalizations.of(context)!;
+  final Map<String, String> zodiacTranslations = {
+    'aquarius': localizations.aquarius,
+    'aries': localizations.aries,
+    'cancer': localizations.cancer,
+    'capricorn': localizations.capricorn,
+    'gemini': localizations.gemini,
+    'leo': localizations.leo,
+    'libra': localizations.libra,
+    'pisces': localizations.pisces,
+    'sagittarius': localizations.sagittarius,
+    'scorpio': localizations.scorpio,
+    'taurus': localizations.taurus,
+    'virgo': localizations.virgo,
+  };
+  return zodiacTranslations[key] ??
+      key; // Если ключ не найден, возвращаем сам key
 }

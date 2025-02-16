@@ -1,4 +1,26 @@
 {
+
+  
+  "compatibility": {
+      "love": "Love",
+      "money": "Money",
+      "travel": "Travel",
+      "interests": "Interests",
+      "work": "Work",
+      "compatibility": "Compatibility",
+      "energy": "Energy",
+      "sex": "Sex",
+      "family": "Family",
+      "friendship": "Friendship",
+      "growth": "Growth",
+      "development": "Development",
+      "communication": "Communication",
+      "trust": "Trust",
+      "loyalty": "Loyalty",
+      "conflicts": "Conflicts",
+      "ambitions": "Ambitions"
+    },
+
   "title_compatibility": "Совместимость по восточному гороскопу",
   "aquarius": "Aquarius",
   "title_chinese_horoscope": "Chinese horoscope:",
@@ -13,13 +35,10 @@
   "scorpio":"Scorpio",
   "taurus":"Taurus",
   "virgo":"Virgo",
-
-  
   "today":"Today",
   "tomorrow":"Tomorrow",
   "weekly":"For the week",
-   
-    "appTitle": "My App",
+   "appTitle": "My App",
     "greeting": "Hello, {name}!",
     "helloWorld": "Hello World! 111 en",
     "@greeting": {
@@ -30,4 +49,7 @@
         }
       }
     }
+
+
+
   }

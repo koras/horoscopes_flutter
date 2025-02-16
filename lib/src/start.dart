@@ -48,7 +48,7 @@ class Start extends StatelessWidget {
       theme: darkTheme,
       home: Compatibility(),
       //   locale: context.locale,
-      //  home: ZodiacListPage(),
+      //home: ZodiacListPage(),
     );
   }
 }
