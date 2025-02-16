@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'src/zodiac.dart';
+import 'src/start.dart';
 //import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
@@ -42,8 +42,8 @@ void main() async {
 
       fallbackLocale: Locale('en'), // Язык по умолчанию
 
-      startLocale: const Locale('en'), // Установите  локаль
-      child: Zodiac(),
+      startLocale: const Locale('ru'), // Установите  локаль
+      child: Start(),
     ),
   );
 }

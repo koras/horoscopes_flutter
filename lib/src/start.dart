@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'country_detail_page.dart';
-import 'zodiac_detail.dart';
+import 'zodiac/zodiac_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
-import 'zodiac_data.dart';
+import 'zodiac/zodiac_data.dart';
+import 'compatibility/compatibility.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class Zodiac extends StatelessWidget {
+class Start extends StatelessWidget {
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark, // Тёмная тема
     primaryColor: Colors.blueGrey, // Основной цвет
@@ -45,8 +46,9 @@ class Zodiac extends StatelessWidget {
 //      locale: const Locale('ru'), // Устанавливаем сохраненную локаль
       //  localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: darkTheme,
+      home: Compatibility(),
       //   locale: context.locale,
-      home: ZodiacListPage(),
+      //  home: ZodiacListPage(),
     );
   }
 }
