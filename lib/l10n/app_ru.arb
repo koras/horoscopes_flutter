@@ -1,4 +1,5 @@
 {
+  "title_compatibility": "Совместимость по восточному гороскопу",
   "aquarius": "Водолей",
   "title_chinese_horoscope": "Китайский гороскоп:",
   "aries":"Овен",
@@ -15,10 +16,7 @@
 
   "today":"Сегодня",
   "tomorrow":"Завтра",
-  "weekly":"На неделю",
-
-
-
+  "weekly":"На неделю",                              
     "appTitle": "My App",
     "greeting": "Hello, {name}!",
     "helloWorld": "Hello World! 333 ru",

@@ -30,6 +30,13 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  
+flutter_gen:
+  output: lib/gen/
+  line_length: 80
+  integrations:
+    flutter_localizations:
+      enabled: true
 
 flutter:
   uses-material-design: true

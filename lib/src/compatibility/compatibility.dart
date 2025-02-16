@@ -8,6 +8,7 @@ import '../zodiac/zodiac_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:collection/collection.dart'; // Для firstWhereOrNull
+import 'dart:math';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
@@ -33,7 +34,9 @@ class _CompatibilityState extends State<Compatibility> {
     // print(context.locale.toString());
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.virgo)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.title_compatibility),
+      ),
       // Text('helloWorld'.tr())),
       body: Column(
         children: <Widget>[
@@ -49,13 +52,21 @@ class _CompatibilityState extends State<Compatibility> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    children: [
-                      _circles(context, 'Любовь'),
-                      _circles(context, 'Деньги'),
-                      _circles(context, 'Путешествия'),
-                      _circles(context, 'Интересы'),
-                    ],
+                  child: SingleChildScrollView(
+                    physics:
+                        BouncingScrollPhysics(), // Для iOS-подобной прокрутки
+                    child: Column(
+                      children: [
+                        _circles(context, 'Любовь'),
+                        _circles(context, 'Деньги'),
+                        _circles(context, 'Путешествия'),
+                        _circles(context, 'Интересы'),
+                        _circles(context, 'Любовь'),
+                        _circles(context, 'Деньги'),
+                        _circles(context, 'Путешествия'),
+                        _circles(context, 'Интересы'),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -74,18 +85,25 @@ class _CompatibilityState extends State<Compatibility> {
 }
 
 Widget _circles(BuildContext context, String text) {
+  final random = Random();
+  final _randomNumber = 20 + random.nextInt(81);
+  final _randomNumberString = _randomNumber.toString() + '%';
+
   return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            //    AppLocalizations.of(context)!.i,
-            text, // Используем функцию
-            style: const TextStyle(
-              fontSize: 14.0,
-              color: Color.fromARGB(117, 255, 217, 0), // Цвет текста
+        Center(
+          // Центрируем по горизонтали и вертикали
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              //    AppLocalizations.of(context)!.i,
+              text, // Используем функцию
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: Color.fromARGB(117, 138, 135, 0), // Цвет текста
+              ),
             ),
           ),
         ),
@@ -99,10 +117,10 @@ Widget _circles(BuildContext context, String text) {
                 Container(
                   height: 150,
                   width: 150,
-                  child: _buble(context),
+                  child: _buble(context, _randomNumber.toDouble()),
                 ),
-                const Text(
-                  '75%',
+                Text(
+                  _randomNumberString,
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -127,16 +145,19 @@ Widget _titleIcons(BuildContext context) {
     child: Row(
       children: [
         Expanded(
-          child: Center(
-            // Центрируем по горизонтали и вертикали
-            child: Image.asset(
-              'images/icons/men.png',
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Text('error load image');
-              },
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 20, top: 20),
+            child: Center(
+              // Центрируем по горизонтали и вертикали
+              child: Image.asset(
+                'images/icons/men.png',
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Text('error load image');
+                },
+              ),
             ),
           ),
         ),
@@ -155,16 +176,19 @@ Widget _titleIcons(BuildContext context) {
           ),
         ),
         Expanded(
-          child: Center(
-            // Центрируем по горизонтали и вертикали
-            child: Image.asset(
-              'images/icons/woman.png',
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Text('error load image');
-              },
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 20, top: 20),
+            child: Center(
+              // Центрируем по горизонтали и вертикали
+              child: Image.asset(
+                'images/icons/woman.png',
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Text('error load image');
+                },
+              ),
             ),
           ),
         ),
@@ -191,7 +215,7 @@ List<InkWell> Sodiacs(BuildContext context) {
           children: [
             Image.asset(
               entry.value['img'],
-              width: 20,
+              width: 30,
               height: 20,
             ),
             SizedBox(height: 8),
@@ -209,12 +233,12 @@ List<InkWell> Sodiacs(BuildContext context) {
   }).toList();
 }
 
-Widget _buble(BuildContext context) {
+Widget _buble(BuildContext context, double _randomNumber) {
   return SfCircularChart(
     series: <CircularSeries>[
       RadialBarSeries<ChartData, String>(
           dataSource: [
-            ChartData('Задача 1', 75),
+            ChartData('Задача 1', _randomNumber),
           ],
           xValueMapper: (ChartData data, _) => data.category,
           yValueMapper: (ChartData data, _) => data.value,
