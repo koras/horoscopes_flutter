@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../country_detail_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:convert'; // Добавьте этот импорт
 import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
 import '../zodiac/zodiac_data.dart';
@@ -21,7 +21,7 @@ class Compatibility extends StatefulWidget {
 class _CompatibilityState extends State<Compatibility> {
   Map<String, dynamic>? compatibilityInfo;
 
-  Map<String, String> compatibilityChoose = {
+  late Map<String, String> compatibilityChoose = {
     'woman': 'aquarius',
     'man': 'aquarius',
   };
@@ -32,11 +32,33 @@ class _CompatibilityState extends State<Compatibility> {
     await prefs.setString('user_choice_$gender', sodiac);
   }
 
+  Future<void> _saveGenderGender(Map<String, dynamic> info) async {
+    final prefs = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(info);
+    await prefs.setString('Compatibility_info', jsonString);
+  }
+
+  Future<void> _loadGenderGender() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Получаем JSON-строку
+    String? jsonString = prefs.getString('Compatibility_info');
+
+    if (jsonString != null) {
+      // Преобразуем JSON-строку обратно в Map
+      compatibilityInfo = jsonDecode(jsonString);
+      //   return info;
+    } else {
+      return null; // Если данных нет
+    }
+  }
+
   /// Загрузка сохраненного выбора
   Future<void> _loadUserChoice() async {
     final prefs = await SharedPreferences.getInstance();
     String? savedChoiceMan = prefs.getString('user_choice_man');
     String? savedChoiceWoman = prefs.getString('user_choice_woman');
+
+    String? compatibility_info = prefs.getString('Compatibility_info');
 
     if (savedChoiceMan != null) {
       setState(() {
@@ -50,12 +72,6 @@ class _CompatibilityState extends State<Compatibility> {
     }
   }
 
-  //"aquarius"
-
-  // List<dynamic> countries = [];
-//  List<dynamic> filteredCountries = [];
-//  TextEditingController searchController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -64,12 +80,21 @@ class _CompatibilityState extends State<Compatibility> {
 
   Future<void> fetchCompatibilityDetails() async {
     try {
-      // здесь будет запрос к api
-      compatibilityInfo = {
-        "aquarius": {
-          "aquarius": {"love": 20, "money": 13}
+      if (compatibilityInfo == null) {
+        var response = await Dio().get('https://moon.local/api/compatibility');
+
+        if (response.statusCode == 200) {
+          // Извлекаем данные из ответа
+          Map<String, dynamic> data = response.data;
+
+          setState(() {
+            compatibilityInfo = data;
+          });
+        } else {
+          // Обработка ошибки, если статус код не 200
+          print('Ошибка при получении данных: ${response.statusCode}');
         }
-      };
+      }
     } catch (e) {
       print('Error fetching country details: $e');
     }
@@ -77,9 +102,12 @@ class _CompatibilityState extends State<Compatibility> {
 
   @override
   Widget build(BuildContext context) {
-    final aquariusData = compatibilityInfo?["aquarius"]?["aquarius"]!;
+    final man = compatibilityChoose['man'];
+    final woman = compatibilityChoose['woman'];
+    final aquariusData = compatibilityInfo?[man][woman];
+    //final aquariusData = compatibilityInfo?["aquarius"]?["aquarius"]!;
     if (aquariusData == null) {
-      return Center(child: Text("Данные не найдены"));
+      return Center(child: Text("Данные загружаются"));
     }
     return Scaffold(
       appBar: AppBar(
@@ -139,8 +167,9 @@ class _CompatibilityState extends State<Compatibility> {
         },
         child: Card(
           color: compatibilityChoose[gender] == entry.value['name']
-              ? const Color.fromARGB(255, 138, 138, 138)
-              : Colors.white, // Полупрозрачный белый цвет
+              ? const Color.fromARGB(255, 236, 236, 236)
+              : const Color.fromARGB(
+                  255, 100, 100, 100), // Полупрозрачный белый цвет
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -155,7 +184,6 @@ class _CompatibilityState extends State<Compatibility> {
                 _getLocalizedZodiacName(context, entry.value['name']),
                 //   translate(entry.value['name'], context),
                 //   AppLocalizations.of(context)!.helloWorld,
-
                 style: const TextStyle(fontSize: 12, color: Colors.blue),
               ),
             ],
