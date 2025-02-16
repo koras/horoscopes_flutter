@@ -20,6 +20,38 @@ class Compatibility extends StatefulWidget {
 
 class _CompatibilityState extends State<Compatibility> {
   Map<String, dynamic>? compatibilityInfo;
+
+  Map<String, String> compatibilityChoose = {
+    'woman': 'aquarius',
+    'man': 'aquarius',
+  };
+
+  Future<void> _saveUserChoice(String gender, String sodiac) async {
+    print('сохранили $sodiac ');
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_choice_$gender', sodiac);
+  }
+
+  /// Загрузка сохраненного выбора
+  Future<void> _loadUserChoice() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedChoiceMan = prefs.getString('user_choice_man');
+    String? savedChoiceWoman = prefs.getString('user_choice_woman');
+
+    if (savedChoiceMan != null) {
+      setState(() {
+        compatibilityChoose['man'] = savedChoiceMan;
+      });
+    }
+    if (savedChoiceWoman != null) {
+      setState(() {
+        compatibilityChoose['woman'] = savedChoiceWoman;
+      });
+    }
+  }
+
+  //"aquarius"
+
   // List<dynamic> countries = [];
 //  List<dynamic> filteredCountries = [];
 //  TextEditingController searchController = TextEditingController();
@@ -32,33 +64,10 @@ class _CompatibilityState extends State<Compatibility> {
 
   Future<void> fetchCompatibilityDetails() async {
     try {
-      // print('пуе  https://restcountries.com/v3.1/name/${widget.zodiacName}');
-      // var response = await Dio()
-      //     .get('https://restcountries.com/v3.1/name/${widget.zodiacName}');
-      // setState(() {
-      //   countryData = response.data[0];
-      // });
+      // здесь будет запрос к api
       compatibilityInfo = {
         "aquarius": {
-          "aquarius": {
-            "love": 20,
-            "money": 13,
-            "travel": 54,
-            "interests": 36,
-            "work": 70,
-            "compatibility": 70,
-            "energy": 100,
-            "sex": 50,
-            "family": 62,
-            "friendship": 67,
-            "growth": 45,
-            "development": 36,
-            "communication": 37,
-            "trust": 82,
-            "loyalty": 67,
-            "conflicts": 80,
-            "ambitions": 88
-          }
+          "aquarius": {"love": 20, "money": 13}
         }
       };
     } catch (e) {
@@ -72,7 +81,6 @@ class _CompatibilityState extends State<Compatibility> {
     if (aquariusData == null) {
       return Center(child: Text("Данные не найдены"));
     }
-    print(aquariusData);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.title_compatibility),
@@ -88,7 +96,7 @@ class _CompatibilityState extends State<Compatibility> {
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
-                    children: Sodiacs(context),
+                    children: Sodiacs(context, "man"),
                   ),
                 ),
                 Expanded(
@@ -96,23 +104,16 @@ class _CompatibilityState extends State<Compatibility> {
                     physics:
                         BouncingScrollPhysics(), // Для iOS-подобной прокрутки
                     child: Column(
-                      children: [
-                        _circles(context, 'Любовь', 23),
-                        _circles(context, 'Деньги', 444),
-                        _circles(context, 'Путешествия', 55),
-                        _circles(context, 'Интересы', 66),
-                      ],
-
-                      //       aquariusData.entries.map((entry) {
-                      //     return _circles(context, entry.key, entry.value);
-                      //   }).toList(),
+                      children: aquariusData.entries.map<Widget>((entry) {
+                        return _circles(context, entry.key, entry.value);
+                      }).toList(),
                     ),
                   ),
                 ),
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
-                    children: Sodiacs(context),
+                    children: Sodiacs(context, "woman"),
                   ),
                 ),
               ],
@@ -122,14 +123,50 @@ class _CompatibilityState extends State<Compatibility> {
       ),
     );
   }
+
+  List<Widget> Sodiacs(BuildContext context, String gender) {
+    return zodiacs.entries.map((entry) {
+      return InkWell(
+        onTap: () {
+          setState(() {
+            String sodiac = entry.value['name'];
+            print(
+              'Тап обнаружен! $sodiac $gender',
+            );
+            compatibilityChoose[gender] = sodiac; // Обновляем выбор
+            _saveUserChoice(gender, sodiac); // Сохраняем выбор
+          });
+        },
+        child: Card(
+          color: compatibilityChoose[gender] == entry.value['name']
+              ? const Color.fromARGB(255, 138, 138, 138)
+              : Colors.white, // Полупрозрачный белый цвет
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                entry.value['img'],
+                width: 50,
+                height: 50,
+              ),
+              SizedBox(height: 12),
+              Text(
+                // entry.value['name'],
+                _getLocalizedZodiacName(context, entry.value['name']),
+                //   translate(entry.value['name'], context),
+                //   AppLocalizations.of(context)!.helloWorld,
+
+                style: const TextStyle(fontSize: 12, color: Colors.blue),
+              ),
+            ],
+          ),
+        ),
+      );
+    }).toList();
+  }
 }
 
 Widget _circles(BuildContext context, String key, int value) {
-//  final random = Random();
-  // final _randomNumber = 20 + random.nextInt(81);
-  print(key);
-  print(value);
-
   final _randomNumber = value.toDouble();
   final _randomNumberString = _randomNumber.toString() + '%';
 
@@ -239,44 +276,6 @@ Widget _titleIcons(BuildContext context) {
       ],
     ),
   );
-}
-
-List<InkWell> Sodiacs(BuildContext context) {
-  return zodiacs.entries.map((entry) {
-    return InkWell(
-      onTap: () {
-        // setState(() {
-        //   // _selectedIndex = i;
-        //   //   _tabController.animateTo(
-        //   //   0); // Переключение на первую вкладку
-        //   print('Тап обнаружен!');
-        //   //     _saveUserChoice(i);
-        // });
-      },
-      child: Card(
-        color: Colors.white, // Полупрозрачный белый цвет
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              entry.value['img'],
-              width: 50,
-              height: 50,
-            ),
-            SizedBox(height: 12),
-            Text(
-              // entry.value['name'],
-              _getLocalizedZodiacName(context, entry.value['name']),
-              //   translate(entry.value['name'], context),
-              //   AppLocalizations.of(context)!.helloWorld,
-
-              style: const TextStyle(fontSize: 12, color: Colors.blue),
-            ),
-          ],
-        ),
-      ),
-    );
-  }).toList();
 }
 
 Widget _buble(BuildContext context, double _randomNumber) {
