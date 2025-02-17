@@ -1,7 +1,6 @@
 {
 
   
-  "compatibility": {
       "love": "Love",
       "money": "Money",
       "travel": "Travel",
@@ -18,8 +17,8 @@
       "trust": "Trust",
       "loyalty": "Loyalty",
       "conflicts": "Conflicts",
-      "ambitions": "Ambitions"
-    },
+      "ambitions": "Ambitions",
+
 
   "title_compatibility": "Совместимость по восточному гороскопу",
   "aquarius": "Aquarius",
@@ -38,6 +37,7 @@
   "today":"Today",
   "tomorrow":"Tomorrow",
   "weekly":"For the week",
+
    "appTitle": "My App",
     "greeting": "Hello, {name}!",
     "helloWorld": "Hello World! 111 en",
@@ -49,7 +49,4 @@
         }
       }
     }
-
-
-
   }

@@ -1,6 +1,6 @@
 {
 
-  "compatibility": {
+  
     "love": "Любовь",
     "money": "Деньги",
     "travel": "Путешествия",
@@ -17,8 +17,8 @@
     "trust": "Доверие",
     "loyalty": "Верность",
     "conflicts": "Конфликты",
-    "ambitions": "Амбиции"
-  },
+    "ambitions": "Амбиции",
+
   "title_compatibility": "Совместимость по восточному гороскопу",
   "aquarius": "Водолей",
   "title_chinese_horoscope": "Китайский гороскоп:",

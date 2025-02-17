@@ -82,11 +82,9 @@ class _CompatibilityState extends State<Compatibility> {
     try {
       if (compatibilityInfo == null) {
         var response = await Dio().get('https://moon.local/api/compatibility');
-
         if (response.statusCode == 200) {
           // Извлекаем данные из ответа
           Map<String, dynamic> data = response.data;
-
           setState(() {
             compatibilityInfo = data;
           });
@@ -149,6 +147,41 @@ class _CompatibilityState extends State<Compatibility> {
           ),
         ],
       ),
+
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Compatibility()),
+                );
+              },
+              child: Text('Screen 1'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Compatibility()),
+                );
+              },
+              child: Text('Screen 2'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Compatibility()),
+                );
+              },
+              child: Text('Screen 3'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -180,7 +213,6 @@ class _CompatibilityState extends State<Compatibility> {
               ),
               SizedBox(height: 12),
               Text(
-                // entry.value['name'],
                 _getLocalizedZodiacName(context, entry.value['name']),
                 //   translate(entry.value['name'], context),
                 //   AppLocalizations.of(context)!.helloWorld,
@@ -208,7 +240,7 @@ Widget _circles(BuildContext context, String key, int value) {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               //    AppLocalizations.of(context)!.i,
-              key, // Используем функцию
+              _getLocalizedZodiacName(context, key),
               style: const TextStyle(
                 fontSize: 14.0,
                 color: Color.fromARGB(117, 255, 252, 53), // Цвет текста
@@ -349,6 +381,31 @@ String _getLocalizedZodiacName(BuildContext context, String key) {
     'taurus': localizations.taurus,
     'virgo': localizations.virgo,
   };
-  return zodiacTranslations[key] ??
-      key; // Если ключ не найден, возвращаем сам key
+  // Словарь для перевода дополнительных ключей
+  final Map<String, String> additionalTranslations = {
+    "love": localizations.love,
+    "money": localizations.money,
+    "travel": localizations.travel,
+    "interests": localizations.interests,
+    "work": localizations.work,
+    "compatibility": localizations.compatibility,
+    "energy": localizations.energy,
+    "sex": localizations.sex,
+    "family": localizations.family,
+    "friendship": localizations.friendship,
+    "growth": localizations.growth,
+    "development": localizations.development,
+    "communication": localizations.communication,
+    "trust": localizations.trust,
+    "loyalty": localizations.loyalty,
+    "conflicts": localizations.conflicts,
+    "ambitions": localizations.ambitions,
+  };
+
+  // Объединяем оба словаря
+  final Map<String, String> allTranslations = {
+    ...zodiacTranslations,
+    ...additionalTranslations,
+  };
+  return allTranslations[key] ?? key; // Если ключ не найден, возвращаем сам key
 }
