@@ -1,22 +1,19 @@
 final Map<String, dynamic> zodiacs = {
-  'aquarius': {'img': 'assets/images/zodiac/aquarius.png', 'name': 'aquarius'},
-  'aries': {'img': 'assets/images/zodiac/aries.png', 'name': 'aries'},
-  'cancer': {'img': 'assets/images/zodiac/cancer.png', 'name': 'cancer'},
-  'capricorn': {
-    'img': 'assets/images/zodiac/capricorn.png',
-    'name': 'capricorn'
-  },
-  'gemini': {'img': 'assets/images/zodiac/gemini.png', 'name': 'gemini'},
-  'leo': {'img': 'assets/images/zodiac/leo.png', 'name': 'leo'},
-  'libra': {'img': 'assets/images/zodiac/libra.png', 'name': 'libra'},
-  'pisces': {'img': 'assets/images/zodiac/pisces.png', 'name': 'pisces'},
+  'aquarius': {'img': 'images/zodiac/aquarius.svg', 'name': 'aquarius'},
+  'aries': {'img': 'images/zodiac/aries.svg', 'name': 'aries'},
+  'cancer': {'img': 'images/zodiac/cancer.svg', 'name': 'cancer'},
+  'capricorn': {'img': 'images/zodiac/capricorn.svg', 'name': 'capricorn'},
+  'gemini': {'img': 'images/zodiac/gemini.svg', 'name': 'gemini'},
+  'leo': {'img': 'images/zodiac/leo.svg', 'name': 'leo'},
+  'libra': {'img': 'images/zodiac/libra.svg', 'name': 'libra'},
+  'pisces': {'img': 'images/zodiac/pisces.svg', 'name': 'pisces'},
   'sagittarius': {
-    'img': 'assets/images/zodiac/sagittarius.png',
+    'img': 'images/zodiac/sagittarius.svg',
     'name': 'sagittarius'
   },
-  'scorpio': {'img': 'assets/images/zodiac/scorpio.png', 'name': 'scorpio'},
-  'taurus': {'img': 'assets/images/zodiac/taurus.png', 'name': 'taurus'},
-  'virgo': {'img': 'assets/images/zodiac/virgo.png', 'name': 'virgo'},
+  'scorpio': {'img': 'images/zodiac/scorpio.svg', 'name': 'scorpio'},
+  'taurus': {'img': 'images/zodiac/taurus.svg', 'name': 'taurus'},
+  'virgo': {'img': 'images/zodiac/virgo.svg', 'name': 'virgo'},
 };
 
 Map<String, dynamic> compatibilityInfo = {
@@ -32,7 +29,6 @@ Map<String, dynamic> compatibilityInfo = {
       "sex": 50,
       "family": 62,
       "friendship": 67,
-      "growth": 45,
       "development": 36,
       "communication": 37,
       "trust": 82,
@@ -42,3 +38,9 @@ Map<String, dynamic> compatibilityInfo = {
     }
   }
 };
+      // print('пуе  https://restcountries.com/v3.1/name/${widget.zodiacName}');
+      // var response = await Dio()
+      //     .get('https://restcountries.com/v3.1/name/${widget.zodiacName}');
+      // setState(() {
+      //   countryData = response.data[0];
+      // });

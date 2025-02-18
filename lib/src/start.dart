@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:dio/dio.dart';
+
+import '../../constants/app_colors.dart';
 import 'zodiac/zodiac_data.dart';
 import 'compatibility/compatibility.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,10 +16,9 @@ class Start extends StatelessWidget {
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark, // Тёмная тема
     primaryColor: Colors.blueGrey, // Основной цвет
-    scaffoldBackgroundColor:
-        const Color.fromARGB(255, 119, 119, 119), // Фон Scaffold
+    scaffoldBackgroundColor: AppColors.background, // Фон Scaffold
     appBarTheme: AppBarTheme(
-      color: Color.fromARGB(255, 143, 143, 143), // Цвет AppBar
+      color: AppColors.background, // Цвет AppBar
     ),
     // Дополнительные настройки (например, шрифты, кнопки и т.д.)
 

@@ -57,4 +57,5 @@ flutter:
     - assets/images/zodiac/aries.png
     - assets/images/zodiac/aquarius.png
     - assets/images/icons/
-    - assets/langs/ 
+    - assets/langs/
+    - assets/icons/
