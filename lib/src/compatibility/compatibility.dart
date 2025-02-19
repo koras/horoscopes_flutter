@@ -106,7 +106,6 @@ class _CompatibilityState extends State<Compatibility> {
     final man = compatibilityChoose['man'];
     final woman = compatibilityChoose['woman'];
     final aquariusData = compatibilityInfo?[man][woman];
-    //final aquariusData = compatibilityInfo?["aquarius"]?["aquarius"]!;
     if (aquariusData == null) {
       return Center(child: Text("Данные загружаются"));
     }
@@ -118,39 +117,40 @@ class _CompatibilityState extends State<Compatibility> {
       body: Column(
         children: <Widget>[
           _titleIcons(context),
+          _content(context, aquariusData),
+        ],
+      ),
+      bottomNavigationBar: getBottomAppBar(context),
+    );
+  }
+
+  Widget _content(BuildContext context, aquariusData) {
+    return Expanded(
+      // Добавлен Expanded для растягивания по вертикали
+      child: Row(
+        children: [
           Expanded(
-            // Добавлен Expanded для растягивания по вертикали
-            child: Row(
-              children: [
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    children: Sodiacs(context, "man"),
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics:
-                        BouncingScrollPhysics(), // Для iOS-подобной прокрутки
-                    child: Column(
-                      children: aquariusData.entries.map<Widget>((entry) {
-                        return _circles(context, entry.key, entry.value);
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    children: Sodiacs(context, "woman"),
-                  ),
-                ),
-              ],
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: Sodiacs(context, "man"),
+            ),
+          ),
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: aquariusData.entries.map<Widget>((entry) {
+                return _circles(context, entry.key, entry.value);
+              }).toList(),
+            ),
+          ),
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: Sodiacs(context, "woman"),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: getBottomAppBar(context),
     );
   }
 
@@ -160,9 +160,9 @@ class _CompatibilityState extends State<Compatibility> {
         padding: const EdgeInsets.only(
             right: 5.0, left: 5.0, bottom: 2.0), // Отступ сверху
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(5.0),
           child: InkWell(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             onTap: () {
               setState(() {
                 String sodiac = entry.value['name'];
@@ -174,8 +174,8 @@ class _CompatibilityState extends State<Compatibility> {
               });
             },
             child: Container(
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
               color: compatibilityChoose[gender] == entry.value['name']
                   ? AppColors.backgroundActive
                   : AppColors.background, // Полупрозрачный белый цвет
@@ -187,9 +187,7 @@ class _CompatibilityState extends State<Compatibility> {
                         top: 3.0, bottom: 3.0), // Отступ сверху
                     child: SvgPicture.asset(
                       entry.value['img'],
-                      //   'images/icons/orbit-svgrepo-com.svg',
-                      // width: 24, // Ширина иконки
-                      height: 25, // Высота иконки
+                      height: 60, // Высота иконки
                       colorFilter: const ColorFilter.mode(
                         AppColors.zodiac,
                         // Новый цвет, который вы хотите применить
@@ -229,24 +227,24 @@ Widget _circles(BuildContext context, String key, int value) {
               alignment: Alignment.center,
               children: [
                 Container(
-                  height: 150,
+                  height: 120,
                   child: _buble(context, _randomNumber),
                 ),
                 Text(
                   _randomNumberString,
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 140),
+                  padding: const EdgeInsets.only(top: 100),
                   child: Text(
                     //    AppLocalizations.of(context)!.i,
                     _getLocalizedZodiacName(context, key),
                     style: const TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 10.0,
                       color: AppColors.onPrimary, // Цвет текста
                     ),
                   ),
