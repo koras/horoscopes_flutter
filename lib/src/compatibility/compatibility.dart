@@ -12,6 +12,13 @@ import 'package:collection/collection.dart'; // Для firstWhereOrNull
 import 'dart:math';
 
 import '../../constants/app_colors.dart';
+import '../getBottomAppBar.dart';
+import '../advertising.dart';
+import './compatibilityData.dart';
+
+import './titleIcons.dart';
+import './circles.dart';
+import './localizedZodiacName.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
@@ -84,17 +91,19 @@ class _CompatibilityState extends State<Compatibility> {
   Future<void> fetchCompatibilityDetails() async {
     try {
       if (compatibilityInfo == null) {
-        var response = await Dio().get('https://moon.local/api/compatibility');
-        if (response.statusCode == 200) {
-          // Извлекаем данные из ответа
-          Map<String, dynamic> data = response.data;
-          setState(() {
-            compatibilityInfo = data;
-          });
-        } else {
-          // Обработка ошибки, если статус код не 200
-          print('Ошибка при получении данных: ${response.statusCode}');
-        }
+        // var response = await Dio().get('https://moon.local/api/compatibility');
+        // var response = compatibilityData;
+
+        // if (response.statusCode == 200) {
+        // Извлекаем данные из ответа
+        //   Map<String, dynamic> data = response.data;
+        setState(() {
+          compatibilityInfo = compatibilityData;
+        });
+        //   } else {
+        // Обработка ошибки, если статус код не 200
+        //  print('Ошибка при получении данных: ${response.statusCode}');
+        //   }
       }
     } catch (e) {
       print('Error fetching country details: $e');
@@ -116,8 +125,9 @@ class _CompatibilityState extends State<Compatibility> {
       // Text('helloWorld'.tr())),
       body: Column(
         children: <Widget>[
-          _titleIcons(context),
+          titleIcons(context),
           _content(context, aquariusData),
+          advertising(context),
         ],
       ),
       bottomNavigationBar: getBottomAppBar(context),
@@ -138,11 +148,11 @@ class _CompatibilityState extends State<Compatibility> {
           ),
           // Центральный блок (45% ширины экрана)
           Flexible(
-            flex: 450, // Примерно 45%
+            flex: 440, // Примерно 45%
             child: GridView.count(
               crossAxisCount: 2,
               children: aquariusData.entries.map<Widget>((entry) {
-                return _circles(context, entry.key, entry.value);
+                return circles(context, entry.key, entry.value);
               }).toList(),
             ),
           ),
@@ -159,41 +169,11 @@ class _CompatibilityState extends State<Compatibility> {
     );
   }
 
-  Widget _content2(BuildContext context, aquariusData) {
-    return Expanded(
-      // Добавлен Expanded для растягивания по вертикали
-      child: Row(
-        children: [
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: Sodiacs(context, "man"),
-            ),
-          ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: aquariusData.entries.map<Widget>((entry) {
-                return _circles(context, entry.key, entry.value);
-              }).toList(),
-            ),
-          ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: Sodiacs(context, "woman"),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   List<Widget> Sodiacs(BuildContext context, String gender) {
     return zodiacs.entries.map((entry) {
       return Padding(
         padding: const EdgeInsets.only(
-            right: 5.0, left: 5.0, bottom: 2.0), // Отступ сверху
+            right: 5.0, left: 5.0, bottom: 0, top: 0), // Отступ сверху
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5.0),
           child: InkWell(
@@ -210,7 +190,7 @@ class _CompatibilityState extends State<Compatibility> {
             },
             child: Container(
               width: 60,
-              height: 60,
+              //  height: 60,
               color: compatibilityChoose[gender] == entry.value['name']
                   ? AppColors.backgroundActive
                   : AppColors.background, // Полупрозрачный белый цвет
@@ -232,7 +212,7 @@ class _CompatibilityState extends State<Compatibility> {
                     ),
                   ),
                   Text(
-                    _getLocalizedZodiacName(context, entry.value['name']),
+                    localizedZodiacName(context, entry.value['name']),
                     style: const TextStyle(
                         fontSize: 10, color: AppColors.onPrimary),
                   ),
@@ -244,300 +224,4 @@ class _CompatibilityState extends State<Compatibility> {
       );
     }).toList();
   }
-}
-
-Widget _circles(BuildContext context, String key, int value) {
-  final _randomNumber = value.toDouble();
-  final _randomNumberString = _randomNumber.toString() + '%';
-
-  return Align(
-    alignment: Alignment.topCenter, // Прижимаем содержимое вверх
-    child: Column(
-      mainAxisSize: MainAxisSize.min, // Минимальный размер по высоте
-      children: [
-        Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Container(
-              width: 150,
-              height: 160,
-              child: _buble(context, _randomNumber),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 70),
-              child: Text(
-                _randomNumberString,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 140),
-              child: Text(
-                //    AppLocalizations.of(context)!.i,
-                _getLocalizedZodiacName(context, key),
-                style: const TextStyle(
-                  fontSize: 10.0,
-                  color: AppColors.onPrimary, // Цвет текста
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-class ChartData {
-  final String category;
-  final double value;
-  ChartData(this.category, this.value);
-}
-
-Widget _titleIcons(BuildContext context) {
-  return IntrinsicHeight(
-    child: Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 20, top: 20),
-            child: Center(
-              // Центрируем по горизонтали и вертикали
-              child: Container(
-                width: 80, // Ширина контейнера
-                height: 80, // Высота контейнера
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // Делаем контейнер круглым
-                  border: Border.all(
-                    color:
-                        const Color.fromARGB(255, 216, 54, 54), // Цвет кромки
-                    width: 2, // Толщина кромки
-                  ),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    'images/icons/men.jpg',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Text('error load image');
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            // Центрируем по горизонтали и вертикали
-            child: Image.asset(
-              'images/icons/heart.png',
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Text('error load image');
-              },
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 20, top: 20),
-            child: Center(
-              child: Container(
-                width: 80, // Ширина контейнера
-                height: 80, // Высота контейнера
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // Делаем контейнер круглым
-                  border: Border.all(
-                    color:
-                        const Color.fromARGB(255, 216, 54, 54), // Цвет кромки
-                    width: 2, // Толщина кромки
-                  ),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    'images/icons/woman.jpg',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Text('error load image');
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buble(BuildContext context, double _randomNumber) {
-  return Align(
-    alignment: Alignment.topCenter, // Прижимаем к верху
-    child: SfCircularChart(
-      series: <CircularSeries>[
-        RadialBarSeries<ChartData, String>(
-          dataSource: [
-            ChartData('Задача 1', _randomNumber),
-          ],
-          xValueMapper: (ChartData data, _) => data.category,
-          yValueMapper: (ChartData data, _) => data.value,
-          // Настройка внешнего вида
-          trackBorderWidth: 0, // Толщина границы фоновой дорожки
-          trackOpacity: 0.2,
-          trackColor: Colors.grey, // Цвет фоновой дорожки
-          cornerStyle: CornerStyle.bothCurve,
-          maximumValue: 100,
-          radius: '100%',
-          innerRadius: '70%', // Внутренний радиус (делает круг тонким)
-          gap: '55%',
-          pointColorMapper: (ChartData data, _) {
-            if (data.value < 50) return Colors.red;
-            if (data.value < 75) return Colors.orange;
-            return Colors.green;
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-BottomAppBar getBottomAppBar(BuildContext context) {
-  return BottomAppBar(
-    color: AppColors.backgroundMenu, // Цвет фона BottomAppBar
-    shape:
-        CircularNotchedRectangle(), // Форма выреза (например, для FloatingActionButton)
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Compatibility()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.backgroundMenu, // Цвет фона
-            foregroundColor: Colors.amberAccent, // Цвет текста
-            overlayColor: Colors.transparent, // Убирает эффект нажатия
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                'images/icons/heart-svgrepo-com.svg',
-                // width: 24, // Ширина иконки
-                height: 50, // Высота иконки
-                color: AppColors.onMenuButton,
-              ), // Путь к вашей иконке
-            ],
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Compatibility()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.backgroundMenu, // Цвет фона
-            foregroundColor: Colors.amberAccent, // Цвет текста
-            overlayColor: Colors.transparent, // Убирает эффект нажатия
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                'images/icons/orbit-svgrepo-com.svg',
-                // width: 24, // Ширина иконки
-                height: 50, // Высота иконки
-                color: AppColors.onMenuButton,
-              ), // Путь к вашей иконке
-            ],
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Compatibility()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.backgroundMenu, // Цвет фона
-            foregroundColor: Colors.amberAccent, // Цвет текста
-            overlayColor: Colors.transparent, // Убирает эффект нажатия
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                'images/icons/star-svgrepo-com.svg',
-                // width: 24, // Ширина иконки
-                height: 52, // Высота иконки
-                color: AppColors.onMenuButton,
-              ), // Путь к вашей иконке
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-String _getLocalizedZodiacName(BuildContext context, String key) {
-  final localizations = AppLocalizations.of(context)!;
-  final Map<String, String> zodiacTranslations = {
-    'aquarius': localizations.aquarius,
-    'aries': localizations.aries,
-    'cancer': localizations.cancer,
-    'capricorn': localizations.capricorn,
-    'gemini': localizations.gemini,
-    'leo': localizations.leo,
-    'libra': localizations.libra,
-    'pisces': localizations.pisces,
-    'sagittarius': localizations.sagittarius,
-    'scorpio': localizations.scorpio,
-    'taurus': localizations.taurus,
-    'virgo': localizations.virgo,
-  };
-  // Словарь для перевода дополнительных ключей
-  final Map<String, String> additionalTranslations = {
-    "love": localizations.love,
-    "money": localizations.money,
-    "travel": localizations.travel,
-    "interests": localizations.interests,
-    "work": localizations.work,
-    "compatibility": localizations.compatibility,
-    "energy": localizations.energy,
-    "sex": localizations.sex,
-    "family": localizations.family,
-    "friendship": localizations.friendship,
-    "development": localizations.development,
-    "communication": localizations.communication,
-    "trust": localizations.trust,
-    "loyalty": localizations.loyalty,
-    "conflicts": localizations.conflicts,
-    "ambitions": localizations.ambitions,
-  };
-
-  // Объединяем оба словаря
-  final Map<String, String> allTranslations = {
-    ...zodiacTranslations,
-    ...additionalTranslations,
-  };
-  return allTranslations[key] ?? key; // Если ключ не найден, возвращаем сам key
 }

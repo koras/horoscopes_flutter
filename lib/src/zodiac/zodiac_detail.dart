@@ -4,19 +4,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../getBottomAppBar.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
 
 class ZodiacDetail extends StatefulWidget {
-  final String zodiacName;
+  // String zodiacName = 'aquarius';
   // final Map<String, dynamic> zodiacs;
 
   @override
   _ZodiacDetailPageState createState() => _ZodiacDetailPageState();
 
-  ZodiacDetail({
-    required this.zodiacName,
-    //required this.zodiacs
-  });
+  // ZodiacDetail({key? key});
+  // ZodiacDetail({
+  // required this.zodiacName,
+  //required this.zodiacs
+  // });
 }
 
 class _ZodiacDetailPageState extends State<ZodiacDetail> {
@@ -126,6 +129,7 @@ class _ZodiacScreenState extends State<ZodiacScreen>
           ),
         ),
       ),
+      bottomNavigationBar: getBottomAppBar(context),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,

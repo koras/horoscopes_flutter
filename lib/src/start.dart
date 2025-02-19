@@ -47,9 +47,9 @@ class Start extends StatelessWidget {
 //      locale: const Locale('ru'), // Устанавливаем сохраненную локаль
       //  localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: darkTheme,
-      home: Compatibility(),
+      home: ZodiacDetail(),
       //   locale: context.locale,
-      //home: ZodiacListPage(),
+      // home: ZodiacListPage(),
     );
   }
 }
@@ -88,9 +88,7 @@ class _CountryListPageState extends State<ZodiacListPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ZodiacDetail(zodiacName: entry.key
-                            //, zodiacs: zodiac
-                            ),
+                        builder: (context) => ZodiacDetail(),
                       ),
                     );
                   },
