@@ -126,6 +126,41 @@ class _CompatibilityState extends State<Compatibility> {
 
   Widget _content(BuildContext context, aquariusData) {
     return Expanded(
+      child: Row(
+        children: [
+          // Левый блок (27.5% ширины экрана)
+          Flexible(
+            flex: 275, // Примерно 27.5%
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: Sodiacs(context, "man"),
+            ),
+          ),
+          // Центральный блок (45% ширины экрана)
+          Flexible(
+            flex: 450, // Примерно 45%
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: aquariusData.entries.map<Widget>((entry) {
+                return _circles(context, entry.key, entry.value);
+              }).toList(),
+            ),
+          ),
+          // Правый блок (27.5% ширины экрана)
+          Flexible(
+            flex: 275, // Примерно 27.5%
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: Sodiacs(context, "woman"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _content2(BuildContext context, aquariusData) {
+    return Expanded(
       // Добавлен Expanded для растягивания по вертикали
       child: Row(
         children: [
@@ -215,45 +250,46 @@ Widget _circles(BuildContext context, String key, int value) {
   final _randomNumber = value.toDouble();
   final _randomNumberString = _randomNumber.toString() + '%';
 
-  return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+  return Align(
+    alignment: Alignment.topCenter, // Прижимаем содержимое вверх
+    child: Column(
+      mainAxisSize: MainAxisSize.min, // Минимальный размер по высоте
       children: [
-        Center(
-          // Центрируем по горизонтали и вертикали
-          child: Align(
-            alignment: Alignment.center, // Выравнивание по левому краю
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  height: 120,
-                  child: _buble(context, _randomNumber),
-                ),
-                Text(
-                  _randomNumberString,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 100),
-                  child: Text(
-                    //    AppLocalizations.of(context)!.i,
-                    _getLocalizedZodiacName(context, key),
-                    style: const TextStyle(
-                      fontSize: 10.0,
-                      color: AppColors.onPrimary, // Цвет текста
-                    ),
-                  ),
-                ),
-              ],
+        Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Container(
+              width: 150,
+              height: 160,
+              child: _buble(context, _randomNumber),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(top: 70),
+              child: Text(
+                _randomNumberString,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 140),
+              child: Text(
+                //    AppLocalizations.of(context)!.i,
+                _getLocalizedZodiacName(context, key),
+                style: const TextStyle(
+                  fontSize: 10.0,
+                  color: AppColors.onPrimary, // Цвет текста
+                ),
+              ),
+            ),
+          ],
         ),
-      ]);
+      ],
+    ),
+  );
 }
 
 class ChartData {
@@ -347,9 +383,11 @@ Widget _titleIcons(BuildContext context) {
 }
 
 Widget _buble(BuildContext context, double _randomNumber) {
-  return SfCircularChart(
-    series: <CircularSeries>[
-      RadialBarSeries<ChartData, String>(
+  return Align(
+    alignment: Alignment.topCenter, // Прижимаем к верху
+    child: SfCircularChart(
+      series: <CircularSeries>[
+        RadialBarSeries<ChartData, String>(
           dataSource: [
             ChartData('Задача 1', _randomNumber),
           ],
@@ -368,8 +406,10 @@ Widget _buble(BuildContext context, double _randomNumber) {
             if (data.value < 50) return Colors.red;
             if (data.value < 75) return Colors.orange;
             return Colors.green;
-          }),
-    ],
+          },
+        ),
+      ],
+    ),
   );
 }
 
