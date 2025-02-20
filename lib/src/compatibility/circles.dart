@@ -30,28 +30,34 @@ Widget circles(BuildContext context, String key, int value) {
         //  color: Colors.amber,
         width: double.infinity,
         //    width: 150,
-        height: 160,
+        height: 150,
         child: _buble(context, _randomNumber),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: Text(
-          _randomNumberString,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
+        padding: const EdgeInsets.only(top: 20),
+        child: Container(
+          height: 150,
+          child: Text(
+            _randomNumberString,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 100),
-        child: Text(
-          //    AppLocalizations.of(context)!.i,
-          localizedZodiacName(context, key),
-          style: const TextStyle(
-            fontSize: 10.0,
-            color: AppColors.onPrimary, // Цвет текста
+        padding: const EdgeInsets.only(top: 80),
+        child: Container(
+          height: 150,
+          child: Text(
+            //    AppLocalizations.of(context)!.i,
+            localizedZodiacName(context, key),
+            style: const TextStyle(
+              fontSize: 10.0,
+              color: AppColors.onPrimary, // Цвет текста
+            ),
           ),
         ),
       ),

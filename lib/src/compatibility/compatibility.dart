@@ -140,7 +140,7 @@ class _CompatibilityState extends State<Compatibility> {
         children: [
           // Левый блок (27.5% ширины экрана)
           Flexible(
-            flex: 300, // Примерно 27.5%
+            flex: 280, // Примерно 27.5%
             child: GridView.count(
               crossAxisCount: 2,
               children: Sodiacs(context, "man"),
@@ -148,7 +148,7 @@ class _CompatibilityState extends State<Compatibility> {
           ),
           // Центральный блок (45% ширины экрана)
           Flexible(
-            flex: 400, // Примерно 45%
+            flex: 440, // Примерно 45%
             child: GridView.count(
               crossAxisCount: 2,
               children: aquariusData.entries.map<Widget>((entry) {
@@ -158,7 +158,7 @@ class _CompatibilityState extends State<Compatibility> {
           ),
           // Правый блок (27.5% ширины экрана)
           Flexible(
-            flex: 300, // Примерно 27.5%
+            flex: 280, // Примерно 27.5%
             child: GridView.count(
               crossAxisCount: 2,
               children: Sodiacs(context, "woman"),
@@ -190,7 +190,7 @@ class _CompatibilityState extends State<Compatibility> {
             },
             child: Container(
               width: 70,
-              //  height: 60,
+              height: 70,
               color: compatibilityChoose[gender] == entry.value['name']
                   ? AppColors.backgroundActive
                   : AppColors.background, // Полупрозрачный белый цвет
@@ -202,7 +202,7 @@ class _CompatibilityState extends State<Compatibility> {
                         top: 3.0, bottom: 3.0), // Отступ сверху
                     child: SvgPicture.asset(
                       entry.value['img'],
-                      height: 60, // Высота иконки
+                      height: 50, // Высота иконки
                       colorFilter: const ColorFilter.mode(
                         AppColors.zodiac,
                         // Новый цвет, который вы хотите применить

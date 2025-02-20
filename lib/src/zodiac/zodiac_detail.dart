@@ -4,10 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
+import 'package:intl/intl.dart';
 import '../../constants/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../getBottomAppBar.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
+
+import '../advertising.dart';
+import 'FormattedDateWidget.dart';
+import 'WeekDatesWidget.dart';
 
 class ZodiacDetail extends StatefulWidget {
   // String zodiacName = 'aquarius';
@@ -113,87 +118,134 @@ class _ZodiacScreenState extends State<ZodiacScreen>
   Widget build(BuildContext context) {
     List<String> zodiacKeys = zodiacs.keys.toList();
 
+    DateTime now = DateTime.now();
+
+    // Форматируем дату с учетом локали
+    String formattedDate = DateFormat.d().format(now) +
+        ' ' +
+        DateFormat.MMM().format(now) +
+        ' ' +
+        DateFormat.y().format(now);
+
+    //  String formattedDate = DateFormat.yMMMMd().format(now);
+
     return Scaffold(
       appBar: AppBar(
         title: _title(context, _selectedIndex),
         centerTitle: false,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 55, 55, 56),
-                Color.fromARGB(255, 55, 37, 58)
-              ], // Градиент для красоты
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
+        // flexibleSpace: Container(
+        //   decoration: const BoxDecoration(
+        //     gradient: LinearGradient(
+        //       colors: [
+        //         Color.fromARGB(255, 55, 55, 56),
+        //         Color.fromARGB(255, 55, 37, 58)
+        //       ], // Градиент для красоты
+        //       begin: Alignment.topLeft,
+        //       end: Alignment.bottomRight,
+        //     ),
+        //   ),
+        // ),
       ),
       bottomNavigationBar: getBottomAppBar(context),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            carousel.CarouselSlider(
+            Padding(
+              padding: EdgeInsets.only(bottom: 10), // Убираем отступ снизу
+              child: carousel.CarouselSlider(
                 items: zodiacKeys.map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _selectedIndex = i;
-                              _tabController.animateTo(
-                                  0); // Переключение на первую вкладку
-                              print('Тап обнаружен!' + i);
-                              _saveUserChoice(i);
-                            });
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 1.0),
-                            decoration: const BoxDecoration(
-                              color: AppColors.background,
-                            ),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  zodiacs[i]['img'],
-                                  //   items[index]['image']!,
-                                  //   width: double.infinity,
-                                  height: 50,
-                                  fit: BoxFit.cover, // Высота иконки
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.zodiac,
-                                    // Новый цвет, который вы хотите применить
-                                    BlendMode
-                                        .srcIn, // Режим смешивания, который заменяет все цвета на указанный
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Container(
+                      //  width: 70,
+                      //  height: 70,
+                      color: _selectedIndex == i
+                          ? AppColors.backgroundActive
+                          : AppColors.background, // Полупрозрачный белый цвет
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                            5,
+                          ), // Отступ сверху
+                          child: Builder(
+                            builder: (BuildContext context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedIndex = i;
+                                    _tabController.animateTo(
+                                        0); // Переключение на первую вкладку
+                                    print('Тап обнаружен!' + i);
+                                    _saveUserChoice(i);
+                                  });
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 1.0),
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.background,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 0,
+                                              left: 0,
+                                              bottom: 0,
+                                              top: 10), // Отступ сверху 20.0
+                                          child: SvgPicture.asset(
+                                            zodiacs[i]['img'],
+                                            //   items[index]['image']!,
+                                            // width: double.infinity,
+                                            height: 45,
+                                            width: 100,
+                                            fit: BoxFit.cover, // Высота иконки
+                                            colorFilter: const ColorFilter.mode(
+                                              AppColors.zodiac,
+                                              // Новый цвет, который вы хотите применить
+                                              BlendMode
+                                                  .srcIn, // Режим смешивания, который заменяет все цвета на указанный
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 0,
+                                                left: 0,
+                                                bottom: 0,
+                                                top: 5),
+                                            child: Text(
+                                              //    AppLocalizations.of(context)!.i,
+                                              _getLocalizedZodiacName(context,
+                                                  i), // Используем функцию
+                                              style: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: AppColors
+                                                    .onPrimary, // Цвет текста
+                                              ),
+                                            )),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text(
-                                      //    AppLocalizations.of(context)!.i,
-                                      _getLocalizedZodiacName(
-                                          context, i), // Используем функцию
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color:
-                                            AppColors.onPrimary, // Цвет текста
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ));
-                    },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 }).toList(),
                 options: carousel.CarouselOptions(
-                  height: 100,
-
+                  height: 110,
                   aspectRatio: 1.0,
                   viewportFraction: 1 /
-                      5.5, // Доля видимой области, которую занимает каждый слайд. Например, 0.8 означает, что 80% ширины экрана будет занято слайдом.
+                      4.5, // Доля видимой области, которую занимает каждый слайд. Например, 0.8 означает, что 80% ширины экрана будет занято слайдом.
                   initialPage: 0, //  Индекс начального слайда.
                   enableInfiniteScroll: false,
                   reverse: false,
@@ -204,14 +256,62 @@ class _ZodiacScreenState extends State<ZodiacScreen>
                   padEnds: false,
                   // onPageChanged: callbackFunction,// Коллбэк, который вызывается при изменении текущего слайда.
                   scrollDirection: Axis.horizontal,
-                )),
+                ),
+              ),
+            ),
             //  _currentZodiac(context, _selectedIndex),
             TabBar(
               controller: _tabController,
+
+              // Цвет текста активной вкладки
+              labelColor: Colors.blue, // Цвет текста активной вкладки
+              unselectedLabelColor:
+                  Colors.grey, // Цвет текста неактивных вкладок
+              // Стиль индикатора (подчеркивание активной вкладки)
+              indicator: UnderlineTabIndicator(
+                borderSide: BorderSide(
+                  width: 2.0,
+                  color: Colors.blue,
+                ), // Толщина и цвет подчеркивания
+                insets: EdgeInsets
+                    .zero, // Убираем отступы, чтобы подчеркивание было на всю ширину
+
+                borderRadius: BorderRadius.circular(10), // Закругле
+              ),
               tabs: [
-                Tab(text: AppLocalizations.of(context)!.today),
-                Tab(text: AppLocalizations.of(context)!.tomorrow),
-                Tab(text: AppLocalizations.of(context)!.weekly),
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 0), // Убираем отступ снизу
+                    child: Text(
+                      AppLocalizations.of(context)!.today,
+                      style: TextStyle(fontSize: 18), // Настройте стиль текста
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  FormattedDateWidget(daysToAdd: 0),
+                ]),
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 0), // Убираем отступ снизу
+                    child: Text(
+                      AppLocalizations.of(context)!.tomorrow,
+                      style: TextStyle(fontSize: 18), // Настройте стиль текста
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  FormattedDateWidget(daysToAdd: 0),
+                ]),
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 0), // Убираем отступ снизу
+                    child: Text(
+                      AppLocalizations.of(context)!.weekly,
+                      style: TextStyle(fontSize: 18), // Настройте стиль текста
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  WeekDatesWidget(),
+                ])
               ],
             ),
             Expanded(
@@ -228,6 +328,8 @@ class _ZodiacScreenState extends State<ZodiacScreen>
                 ],
               ),
             ),
+
+            advertising(context),
           ]),
     );
   }
@@ -294,6 +396,7 @@ Widget _currentZodiac(BuildContext context, String zodiac) {
             ),
           ),
         ),
+
         // Текст (80% ширины)
         Expanded(
           child: Padding(

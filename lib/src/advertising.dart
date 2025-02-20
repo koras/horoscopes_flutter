@@ -16,9 +16,11 @@ import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 Widget advertising(BuildContext context) {
   return Container(
-    color: AppColors.adv,
+    //color: AppColors.adv,
+
+    color: AppColors.primaryVariant,
     width: double.infinity,
-    height: 100,
+    height: 50,
     child: Text(" "),
   );
 }
