@@ -140,7 +140,7 @@ class _CompatibilityState extends State<Compatibility> {
         children: [
           // Левый блок (27.5% ширины экрана)
           Flexible(
-            flex: 275, // Примерно 27.5%
+            flex: 300, // Примерно 27.5%
             child: GridView.count(
               crossAxisCount: 2,
               children: Sodiacs(context, "man"),
@@ -148,7 +148,7 @@ class _CompatibilityState extends State<Compatibility> {
           ),
           // Центральный блок (45% ширины экрана)
           Flexible(
-            flex: 440, // Примерно 45%
+            flex: 400, // Примерно 45%
             child: GridView.count(
               crossAxisCount: 2,
               children: aquariusData.entries.map<Widget>((entry) {
@@ -158,7 +158,7 @@ class _CompatibilityState extends State<Compatibility> {
           ),
           // Правый блок (27.5% ширины экрана)
           Flexible(
-            flex: 275, // Примерно 27.5%
+            flex: 300, // Примерно 27.5%
             child: GridView.count(
               crossAxisCount: 2,
               children: Sodiacs(context, "woman"),
@@ -189,7 +189,7 @@ class _CompatibilityState extends State<Compatibility> {
               });
             },
             child: Container(
-              width: 60,
+              width: 70,
               //  height: 60,
               color: compatibilityChoose[gender] == entry.value['name']
                   ? AppColors.backgroundActive

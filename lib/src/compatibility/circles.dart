@@ -34,7 +34,7 @@ Widget circles(BuildContext context, String key, int value) {
         child: _buble(context, _randomNumber),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 40),
+        padding: const EdgeInsets.only(top: 30),
         child: Text(
           _randomNumberString,
           style: const TextStyle(
@@ -45,7 +45,7 @@ Widget circles(BuildContext context, String key, int value) {
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 110),
+        padding: const EdgeInsets.only(top: 100),
         child: Text(
           //    AppLocalizations.of(context)!.i,
           localizedZodiacName(context, key),
