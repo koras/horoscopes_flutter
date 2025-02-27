@@ -365,11 +365,24 @@ Widget _buildTabContent(
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: SingleChildScrollView(
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            text,
+            style: TextStyle(fontSize: 16),
+          ),
+          _bar(text),
+        ],
       ),
     ),
+  );
+}
+
+Widget _bar(String text) {
+  return Text(
+    text,
+    style: TextStyle(fontSize: 16),
   );
 }
 
