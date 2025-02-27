@@ -130,7 +130,7 @@ class _CompatibilityState extends State<Compatibility> {
           advertising(context),
         ],
       ),
-      bottomNavigationBar: getBottomAppBar(context),
+      bottomNavigationBar: getBottomAppBar(context, 'compatibility'),
     );
   }
 

@@ -25,6 +25,7 @@ class AppColors {
 
   // меню
   static const Color onMenuButton = Color.fromARGB(255, 89, 133, 168);
+  static const Color onMenuButtonActive = Color.fromARGB(255, 209, 209, 209);
   // сердце в совместимости
   static const Color oheart = Color.fromARGB(255, 2, 56, 100);
 

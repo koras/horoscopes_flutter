@@ -18,7 +18,7 @@ import './compatibility/compatibility.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
-BottomAppBar getBottomAppBar(BuildContext context) {
+BottomAppBar getBottomAppBar(BuildContext context, String type) {
   return BottomAppBar(
     color: AppColors.backgroundMenu, // Цвет фона BottomAppBar
     shape:
@@ -28,10 +28,12 @@ BottomAppBar getBottomAppBar(BuildContext context) {
       children: [
         ElevatedButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Compatibility()),
-            );
+            if (type != 'compatibility') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Compatibility()),
+              );
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.backgroundMenu, // Цвет фона
@@ -45,17 +47,21 @@ BottomAppBar getBottomAppBar(BuildContext context) {
                 'images/icons/heart-svgrepo-com.svg',
                 // width: 24, // Ширина иконки
                 height: 50, // Высота иконки
-                color: AppColors.onMenuButton,
+                color: type == 'compatibility'
+                    ? AppColors.onMenuButtonActive
+                    : AppColors.onMenuButton,
               ), // Путь к вашей иконке
             ],
           ),
         ),
         ElevatedButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ZodiacDetail()),
-            );
+            if (type != 'zodiac') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ZodiacDetail()),
+              );
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.backgroundMenu, // Цвет фона
@@ -69,7 +75,9 @@ BottomAppBar getBottomAppBar(BuildContext context) {
                 'images/icons/orbit-svgrepo-com.svg',
                 // width: 24, // Ширина иконки
                 height: 50, // Высота иконки
-                color: AppColors.onMenuButton,
+                color: type == 'zodiac'
+                    ? AppColors.onMenuButtonActive
+                    : AppColors.onMenuButton,
               ), // Путь к вашей иконке
             ],
           ),
