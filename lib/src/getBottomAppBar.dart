@@ -82,30 +82,30 @@ BottomAppBar getBottomAppBar(BuildContext context, String type) {
             ],
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Compatibility()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.backgroundMenu, // Цвет фона
-            foregroundColor: Colors.amberAccent, // Цвет текста
-            overlayColor: Colors.transparent, // Убирает эффект нажатия
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                'images/icons/star-svgrepo-com.svg',
-                // width: 24, // Ширина иконки
-                height: 52, // Высота иконки
-                color: AppColors.onMenuButton,
-              ), // Путь к вашей иконке
-            ],
-          ),
-        ),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => Compatibility()),
+        //     );
+        //   },
+        //   style: ElevatedButton.styleFrom(
+        //     backgroundColor: AppColors.backgroundMenu, // Цвет фона
+        //     foregroundColor: Colors.amberAccent, // Цвет текста
+        //     overlayColor: Colors.transparent, // Убирает эффект нажатия
+        //   ),
+        //   child: Row(
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: [
+        //       SvgPicture.asset(
+        //         'images/icons/star-svgrepo-com.svg',
+        //         // width: 24, // Ширина иконки
+        //         height: 52, // Высота иконки
+        //         color: AppColors.onMenuButton,
+        //       ), // Путь к вашей иконке
+        //     ],
+        //   ),
+        // ),
       ],
     ),
   );

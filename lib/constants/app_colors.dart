@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // Основные цвета
   static const Color primary = Color.fromARGB(255, 0, 32, 58);
-  static const Color primaryVariant = Color(0xFF3700B3);
+  static const Color primaryVariant = Color.fromARGB(255, 3, 46, 78);
   // static const Color secondary = Color(0xFF03DAC6);
   // static const Color secondaryVariant = Color(0xFF018786);
 

@@ -20,7 +20,7 @@ Widget advertising(BuildContext context) {
 
     color: AppColors.primaryVariant,
     width: double.infinity,
-    height: 50,
+    height: 1,
     child: Text(" "),
   );
 }
