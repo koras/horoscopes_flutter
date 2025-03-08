@@ -48,6 +48,7 @@ class Start extends StatelessWidget {
       //  localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: darkTheme,
       home: ZodiacDetail(),
+      // home: Text('123123'),
       //   locale: context.locale,
       // home: ZodiacListPage(),
     );
