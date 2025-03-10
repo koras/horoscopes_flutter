@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import '../country_detail_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Добавьте этот импорт
-import 'package:easy_localization/easy_localization.dart';
-import 'package:dio/dio.dart';
 import '../zodiac/zodiac_data.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Импортируем пакет flutter_svg
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:collection/collection.dart'; // Для firstWhereOrNull
-import 'dart:math';
 
 import '../../constants/app_colors.dart';
 import '../getBottomAppBar.dart';
@@ -19,9 +13,6 @@ import './compatibilityData.dart';
 import './titleIcons.dart';
 import './circles.dart';
 import './localizedZodiacName.dart';
-
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class Compatibility extends StatefulWidget {
   @override
@@ -170,6 +161,7 @@ class _CompatibilityState extends State<Compatibility> {
   }
 
   List<Widget> Sodiacs(BuildContext context, String gender) {
+    final localizationHelper = LocalizationHelper(context);
     return zodiacs.entries.map((entry) {
       return Padding(
         padding: const EdgeInsets.only(
@@ -212,7 +204,7 @@ class _CompatibilityState extends State<Compatibility> {
                     ),
                   ),
                   Text(
-                    localizedZodiacName(context, entry.value['name']),
+                    localizationHelper.localizedZodiacName(entry.value['name']),
                     style: const TextStyle(
                         fontSize: 10, color: AppColors.onPrimary),
                   ),

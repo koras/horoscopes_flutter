@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
-import '../country_detail_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert'; // Добавьте этот импорт
-import 'package:easy_localization/easy_localization.dart';
-import 'package:dio/dio.dart';
-import '../zodiac/zodiac_data.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // Импортируем пакет flutter_svg
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:collection/collection.dart'; // Для firstWhereOrNull
-import 'dart:math';
-
 import '../../constants/app_colors.dart';
-import '../getBottomAppBar.dart';
-import './titleIcons.dart';
 import './localizedZodiacName.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 Widget circles(BuildContext context, String key, int value) {
+  final localizationHelper = LocalizationHelper(context);
   final _randomNumber = value.toDouble();
   final _randomNumberString = _randomNumber.toString() + '%';
 
@@ -53,7 +39,7 @@ Widget circles(BuildContext context, String key, int value) {
           height: 150,
           child: Text(
             //    AppLocalizations.of(context)!.i,
-            localizedZodiacName(context, key),
+            localizationHelper.localizedZodiacName(key),
             style: const TextStyle(
               fontSize: 10.0,
               color: AppColors.onPrimary, // Цвет текста
