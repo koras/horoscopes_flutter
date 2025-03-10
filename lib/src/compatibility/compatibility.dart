@@ -82,19 +82,9 @@ class _CompatibilityState extends State<Compatibility> {
   Future<void> fetchCompatibilityDetails() async {
     try {
       if (compatibilityInfo == null) {
-        // var response = await Dio().get('https://moon.local/api/compatibility');
-        // var response = compatibilityData;
-
-        // if (response.statusCode == 200) {
-        // Извлекаем данные из ответа
-        //   Map<String, dynamic> data = response.data;
         setState(() {
           compatibilityInfo = compatibilityData;
         });
-        //   } else {
-        // Обработка ошибки, если статус код не 200
-        //  print('Ошибка при получении данных: ${response.statusCode}');
-        //   }
       }
     } catch (e) {
       print('Error fetching country details: $e');

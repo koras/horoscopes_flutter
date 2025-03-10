@@ -42,18 +42,7 @@ class TabContentBuilder {
     final textRu = zodiacData.text.ru;
     final textEn = zodiacData.text.en;
 
-    print(zodiac);
     final zodiacText = ZodiacData.fromJson(dataForDate[zodiac]);
-
-    String getLocalizedText(ZodiacData zodiacData) {
-      if (locale == 'ru') {
-        return zodiacData.text.ru; // Текст на русском
-      } else {
-        return zodiacData.text.en; // Текст на английском (по умолчанию)
-      }
-    }
-
-    print(zodiacText);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -62,13 +51,21 @@ class TabContentBuilder {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              textRu,
-              style: TextStyle(fontSize: 16),
+              getLocalizedText(locale, zodiacData),
+              style: TextStyle(fontSize: 18),
             )
             // _bar(text),
           ],
         ),
       ),
     );
+  }
+}
+
+String getLocalizedText(String locale, ZodiacData zodiacData) {
+  if (locale == 'ru') {
+    return zodiacData.text.ru; // Текст на русском
+  } else {
+    return zodiacData.text.en; // Текст на английском (по умолчанию)
   }
 }

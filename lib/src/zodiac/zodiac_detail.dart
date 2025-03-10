@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
-import '../../constants/app_colors.dart';
 import 'ZodiacCarousel.dart';
 import '../getBottomAppBar.dart';
 import '../advertising.dart';
@@ -111,7 +109,6 @@ class _ZodiacScreenState extends State<ZodiacScreen>
     final localizationHelper = LocalizationHelper(context);
 
     if (widget.countryData == null || widget.countryData!.isEmpty) {
-      print(widget.countryData);
       return Center(child: Text('Данные не содержат ключа "daily"'));
     }
     final dailyData = widget.countryData as Map<String, dynamic>;
@@ -177,7 +174,6 @@ class _ZodiacScreenState extends State<ZodiacScreen>
               },
               tabController: _tabController,
               saveUserChoice: _saveUserChoice,
-              //   getLocalizedZodiacName: _getLocalizedZodiacName,
             ),
           ),
           TabBar(
@@ -203,25 +199,3 @@ class _ZodiacScreenState extends State<ZodiacScreen>
     );
   }
 }
-
-// Widget _title(BuildContext context, String key) {
-//   final localizationHelper = LocalizationHelper(context);
-//   String zodiac = localizationHelper.localizedZodiacName(key);
-//   String title_chinese_horoscope =
-//       AppLocalizations.of(context)!.title_chinese_horoscope;
-//   return Padding(
-//     padding: const EdgeInsets.only(left: 16.0), // Отступ слева
-//     child: Align(
-//       alignment: Alignment.centerLeft, // Выравнивание по левому краю
-//       child: Text(
-//         '$title_chinese_horoscope $zodiac',
-//         style: const TextStyle(
-//           fontSize: 20, // Размер текста
-//           //   fontWeight: FontWeight.bold, // Жирный шрифт
-//           color: AppColors.onPrimary, // Цвет текста
-//           fontStyle: FontStyle.normal, // Курсив
-//         ),
-//       ),
-//     ),
-//   );
-// }
