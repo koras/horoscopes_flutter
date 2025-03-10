@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
 import 'package:intl/intl.dart';
 import '../../constants/app_colors.dart';
+
+import 'ZodiacCarousel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../getBottomAppBar.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
@@ -13,23 +15,19 @@ import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import '../advertising.dart';
 import 'FormattedDateWidget.dart';
 import 'WeekDatesWidget.dart';
+import 'dart:convert';
+
+import 'HoroskopeResponse.dart';
+
+import 'TabContentBuilder.dart';
 
 class ZodiacDetail extends StatefulWidget {
-  // String zodiacName = 'aquarius';
-  // final Map<String, dynamic> zodiacs;
-
   @override
   _ZodiacDetailPageState createState() => _ZodiacDetailPageState();
-
-  // ZodiacDetail({key? key});
-  // ZodiacDetail({
-  // required this.zodiacName,
-  //required this.zodiacs
-  // });
 }
 
 class _ZodiacDetailPageState extends State<ZodiacDetail> {
-  Map<String, dynamic>? countryData;
+  Map<String, dynamic>? dataDao;
 
   @override
   void initState() {
@@ -37,37 +35,63 @@ class _ZodiacDetailPageState extends State<ZodiacDetail> {
     fetchCountryDetails();
   }
 
+  // String jsonString =
+  //     '{"daily": {"08.03":{"aquarius":{"chart":{"chart_love":97,"chart_money":76,"chart_like":97},"text":{"ru":"Ну,тыступайтеперьвсвою—очередь,вопросЧичиков.—Мынапишем,чтоонивсамомделе.","en":"Bill!catchholdofitsmouthagain,andthat\'sverylikehavingagameofcroquetshewaspeering."},"favorite_numbers":[3,32,57,63,72]},"aries":{"chart":{"chart_love":81,"chart_money":14,"chart_like":98},"text":{"ru":"Чичиковкстоявшей—бабе.—Есть.—Схреномисострахомпосмотрелнанего—особенной.","en":"I?Ah,THAT\'Sthegreathall,withthewords\'DRINKME,\'butneverthelesssheuncorkeditandput."},"favorite_numbers":[4,8,71,85,86]},"cancer":{"chart":{"chart_love":56,"chart_money":44,"chart_like":16},"text":{"ru":"Попадалисьвытянутыепошнуркудеревни,постройкоюпохожиенастарыескладенныедрова,покрытые.","en":"I\'dbeenthewhiting,\'saidAlice,andshetriedtogetthroughwasmorethanthat,ifyoulike!\'."},"favorite_numbers":[17,30,43,58,80]},"capricorn":{"chart":{"chart_love":71,"chart_money":82,"chart_like":71},"text":{"ru":"Всемуестьграницы,—сказалМанилов.—Совершеннаяправда,—народилось,дачтовдомеестьмного.","en":"Shewentonagain:\'Twenty-fourhours,ITHINK;orisittwelve?I--\'\'Oh,don\'ttalkabout."},"favorite_numbers":[12,41,55,82,96]},"gemini":{"chart":{"chart_love":57,"chart_money":91,"chart_like":54},"text":{"ru":"Пройдет,пройдет,матушка.Наэтонечегоглядеть.—Дайбог,чтобыпрошло.Я-тосмазываласвиным.","en":"Alicehadgotitsheadimpatiently,andwalkedoff;theDormousefollowedhim:theMarchHare."},"favorite_numbers":[11,25,29,64,69]},"leo":{"chart":{"chart_love":14,"chart_money":37,"chart_like":67},"text":{"ru":"Вотменьшой,Алкид,тотнетакбыстр,аэтотчертзнаетчтодали,трехаршинсвершкомростом!.","en":"Andyetyouincessantlystandonyourhead--Doyouthinkyoucouldseethis,asshecameinwith."},"favorite_numbers":[3,8,55,62,63]},"libra":{"chart":{"chart_love":45,"chart_money":19,"chart_like":12},"text":{"ru":"Казаньнедоедет»,—отвечалзять.—Ая,брат,—попользоватьсябынасчетклубнички!»Одних.","en":"BESTbutter,\'theMarchHare.Alicesighedwearily.\'Ithinkyoumightdoverywelltosay\'Ionce."},"favorite_numbers":[6,44,47,61,62]},"pisces":{"chart":{"chart_love":79,"chart_money":30,"chart_like":19},"text":{"ru":"ПотомуНоздреввелелпринестибутылкумадеры,лучшекоторойнепивалсамфельдмаршал.Мадера.","en":"Caterpillar.Herewasanotherpuzzlingquestion;andashespoke,andadded\'Itisn\'tabird,\'."},"favorite_numbers":[5,29,81,89,100]},"sagittarius":{"chart":{"chart_love":67,"chart_money":84,"chart_like":3},"text":{"ru":"Собакевичу.«Ачтож,матушка,порукам,чтоли?тыпосудисам:зачемжесрединедумающих.","en":"Two.Twobeganinalow,hurriedtone.HelookedatAlice,asshecouldn\'tanswereitherquestion."},"favorite_numbers":[2,10,13,57,85]},"scorpio":{"chart":{"chart_love":92,"chart_money":83,"chart_like":30},"text":{"ru":"Манилова,которыебылиещетолькостатскиесоветники,сказалдажеошибкоюдвараза:«ваше.","en":"Queen.Aninvitationforthemomenthowlargeshehadnotthesmallestideahowconfusingitis."},"favorite_numbers":[31,56,66,73,75]},"taurus":{"chart":{"chart_love":93,"chart_money":74,"chart_like":33},"text":{"ru":"Вонкакпотащился!конекпристяжнойнедурен,я—вижу,сочинитель!—Нет,большедвухрублейяне.","en":"I\'lltellhim--itwasforbringingthecooktillhiseyesweregettingextremelysmallfora."},"favorite_numbers":[11,20,54,89,97]},"virgo":{"chart":{"chart_love":34,"chart_money":89,"chart_like":49},"text":{"ru":"Пожалуй,почемужене«удовлетворить!Вотоно,внутреннеерасположение:всамойкомнатетяжелый.","en":"MarchHareinterruptedinaminuteortwoshewalkedoninthesewords:\'Yes,wewenttothelaw."},"favorite_numbers":[7,38,48,82,99]}}}}';
+
   Future<void> fetchCountryDetails() async {
+    final String url = 'https://horoscope.staers.ru/api/horoscope/info';
+
     try {
-      // print('пуе  https://restcountries.com/v3.1/name/${widget.zodiacName}');
-      // var response = await Dio()
-      //     .get('https://restcountries.com/v3.1/name/${widget.zodiacName}');
-      // setState(() {
-      //   countryData = response.data[0];
-      // });
-      countryData = {
-        'aquarius': {
-          'today':
-              'День для вас будет наполнен глубокими эмоциями и интуитивными озарениями. Вбороты, и это поможет вам справитьтенсивность может вызывать напряжение в отношениях с окружающими. Постарайтесь не поддаваться желанию контролировать всё и всех вокруг.                  Утром вы можете почувствовать легкое беспокойство или тревогу. Это связано с тем, что ваше подсознание активно работает, обрабатывая информацию, которую вы получили в последние дни. Не игнорируйте свои сны или внезапные мысли — они могут подсказать вам важные решения. Запишите свои идеи, чтобы не упустить их.                  В первой половине дня звезды советуют сосредоточиться на работе или важных проектах. Ваша решительность и умение видеть суть вещей помогут вам добиться успеха. ',
-          'tomorrow':
-              'Звезды советуют быть внимательными к деталям — они могут сыграть ключевую роль.Не бойтесь проявлять инициативу, но избегайте излишней спешки.В отношениях возможны небольшие разногласия — проявите терпение и понимание.Финансовая удача на вашей стороне, но избегайте необдуманных трат.День подходит для планирования и постановки долгосрочных целей.Вас ждут неожиданные встречи, которые могут повлиять на ваше будущее.Звезды рекомендуют уделить время здоровью — небольшая забота о себе принесет пользу.Творческие идеи будут приходить легко — записывайте их, чтобы не упустить.Сегодняшний день благоприятен для обучения и саморазвития.Вечером постарайтесь расслабиться и насладиться моментом — завтра будет новый день! ',
-          'weekly':
-              'Не бойтесь выходить из зоны комфорта — это откроет перед вами новые горизонты. Финансовая удача на вашей стороне, но избегайте импульсивных решений. В отношениях важно проявлять чуткость и понимание. День подходит для планирования и постановки целей. Ваша энергия на высоте, используйте её для завершения давних дел. Не забывайте отдыхать, чтобы сохранить баланс. Доверяйте своей интуиции — она вас не подведёт. Сегодняшний день полон возможностей, главное — действовать смело и уверенно!',
+      final response = await Dio().get(url);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> decodedData = response.data;
+        if (decodedData.containsKey('daily')) {
+          setState(() {
+            print("ставим данные ---------------------- ");
+            print("ставим данные ---------------------- ");
+
+            dataDao = decodedData['daily'];
+          });
+        } else {
+          setState(() {
+            dataDao =
+                {}; // Инициализируем пустой картой, если ключ 'daily' отсутствует
+          });
+          print('Data does not contain "daily" key');
         }
-      };
+      } else {
+        setState(() {
+          dataDao = {}; // Инициализируем пустой картой в случае ошибки
+        });
+        print('Failed to load data: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      setState(() {
+        dataDao = {}; // Инициализируем пустой картой в случае исключения
+      });
+      print('Dio error: $e');
     } catch (e) {
-      print('Error fetching country details: $e');
+      setState(() {
+        dataDao =
+            {}; // Инициализируем пустой картой в случае неожиданной ошибки
+      });
+      print('Unexpected error: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ZodiacScreen(countryData: countryData);
+    if (dataDao == null) {
+      return Center(child: Text('1111'));
+    }
+    print('countryData   =  =  = ');
+
+    return ZodiacScreen(countryData: dataDao!);
   }
 }
 
 class ZodiacScreen extends StatefulWidget {
-  final Map<String, dynamic>? countryData; // Добавляем countryData как парамет
+  final Map<String, dynamic>? countryData;
 
   ZodiacScreen({this.countryData}); // Конструктор
   @override
@@ -76,35 +100,33 @@ class ZodiacScreen extends StatefulWidget {
 
 class _ZodiacScreenState extends State<ZodiacScreen>
     with SingleTickerProviderStateMixin {
-  String _selectedIndex = ''; // Индекс выбранного элемента в слайдере
-
-  Future<void> _saveUserChoice(String choice) async {
-    print('сохранили $choice ');
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_choice', choice);
-  }
-
-  /// Загрузка сохраненного выбора
-  Future<void> _loadUserChoice() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? savedChoice = prefs.getString('user_choice');
-
-    if (savedChoice != null) {
-      setState(() {
-        _selectedIndex = savedChoice;
-      });
-    }
-  }
-
-  int _currentIndex = 0;
+  String _selectedIndex = '';
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    if (widget.countryData != null && widget.countryData!.isNotEmpty) {
+      _tabController =
+          TabController(length: widget.countryData!.length, vsync: this);
+    }
+
     _loadUserChoice();
+  }
+
+  Future<void> _saveUserChoice(String choice) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_choice', choice);
+  }
+
+  Future<void> _loadUserChoice() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedChoice = prefs.getString('user_choice');
+    if (savedChoice != null) {
+      setState(() {
+        _selectedIndex = savedChoice;
+      });
+    }
   }
 
   @override
@@ -113,318 +135,103 @@ class _ZodiacScreenState extends State<ZodiacScreen>
     super.dispose();
   }
 
-// https://pub.dev/packages/carousel_slider
   @override
   Widget build(BuildContext context) {
+    if (widget.countryData == null || widget.countryData!.isEmpty) {
+      print('Данные не содержат ключа "daily"');
+      print('Данные не содержат ключа "daily"');
+      print('Данные не содержат ключа "daily"');
+      print('Данные не содержат ключа "daily"');
+      print(widget.countryData);
+      return Center(child: Text('Данные не содержат ключа "daily"'));
+    }
+    final dailyData = widget.countryData as Map<String, dynamic>;
+    if (dailyData.isEmpty) {
+      return Center(child: Text('Нет данных для отображения'));
+    }
+
     List<String> zodiacKeys = zodiacs.keys.toList();
+    final locale = Localizations.localeOf(context);
+    final currentLanguage = locale.languageCode;
 
-    DateTime now = DateTime.now();
+    final tabsTitle = dailyData.keys.map((date) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              date,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          SizedBox(height: 4),
+        ],
+      );
+    }).toList();
 
-    // Форматируем дату с учетом локали
-    String formattedDate = DateFormat.d().format(now) +
-        ' ' +
-        DateFormat.MMM().format(now) +
-        ' ' +
-        DateFormat.y().format(now);
+    final tabViews = dailyData.entries.map<Widget>((entry) {
+      final date = entry.key;
+      final dataForDate = entry.value;
 
-    //  String formattedDate = DateFormat.yMMMMd().format(now);
+      if (!dataForDate.containsKey(_selectedIndex)) {
+        return Center(child: Text('Нет данных для выбранного знака зодиака'));
+      }
 
+      return TabContentBuilder(
+        period: date,
+        dataForDate: dataForDate,
+        zodiac: _selectedIndex,
+        locale: currentLanguage,
+      ).build();
+    }).toList();
+
+    //return Text('1212121');
     return Scaffold(
       appBar: AppBar(
         title: _title(context, _selectedIndex),
         centerTitle: false,
-        // flexibleSpace: Container(
-        //   decoration: const BoxDecoration(
-        //     gradient: LinearGradient(
-        //       colors: [
-        //         Color.fromARGB(255, 55, 55, 56),
-        //         Color.fromARGB(255, 55, 37, 58)
-        //       ], // Градиент для красоты
-        //       begin: Alignment.topLeft,
-        //       end: Alignment.bottomRight,
-        //     ),
-        //   ),
-        // ),
       ),
       bottomNavigationBar: getBottomAppBar(context, 'zodiac'),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 10), // Убираем отступ снизу
-              child: carousel.CarouselSlider(
-                items: zodiacKeys.map((i) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Container(
-                      //  width: 70,
-                      //  height: 70,
-                      color: _selectedIndex == i
-                          ? AppColors.backgroundActive
-                          : AppColors.background, // Полупрозрачный белый цвет
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            5,
-                          ), // Отступ сверху
-                          child: Builder(
-                            builder: (BuildContext context) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedIndex = i;
-                                    _tabController.animateTo(
-                                        0); // Переключение на первую вкладку
-                                    print('Тап обнаружен!' + i);
-                                    _saveUserChoice(i);
-                                  });
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 1.0),
-                                    decoration: const BoxDecoration(
-                                      color: AppColors.background,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 0,
-                                              left: 0,
-                                              bottom: 0,
-                                              top: 10), // Отступ сверху 20.0
-                                          child: SvgPicture.asset(
-                                            zodiacs[i]['img'],
-                                            //   items[index]['image']!,
-                                            // width: double.infinity,
-                                            height: 45,
-                                            width: 100,
-                                            fit: BoxFit.cover, // Высота иконки
-                                            colorFilter: const ColorFilter.mode(
-                                              AppColors.zodiac,
-                                              // Новый цвет, который вы хотите применить
-                                              BlendMode
-                                                  .srcIn, // Режим смешивания, который заменяет все цвета на указанный
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(
-                                                right: 0,
-                                                left: 0,
-                                                bottom: 0,
-                                                top: 5),
-                                            child: Text(
-                                              //    AppLocalizations.of(context)!.i,
-                                              _getLocalizedZodiacName(context,
-                                                  i), // Используем функцию
-                                              style: const TextStyle(
-                                                fontSize: 14.0,
-                                                color: AppColors
-                                                    .onPrimary, // Цвет текста
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-                options: carousel.CarouselOptions(
-                  height: 110,
-                  aspectRatio: 1.0,
-                  viewportFraction: 1 /
-                      4.5, // Доля видимой области, которую занимает каждый слайд. Например, 0.8 означает, что 80% ширины экрана будет занято слайдом.
-                  initialPage: 0, //  Индекс начального слайда.
-                  enableInfiniteScroll: false,
-                  reverse: false,
-                  autoPlay:
-                      false, //  Включает автоматическую прокрутку слайдов.
-                  enlargeCenterPage: false,
-                  enlargeFactor: 0.3,
-                  padEnds: false,
-                  // onPageChanged: callbackFunction,// Коллбэк, который вызывается при изменении текущего слайда.
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-            ),
-            //  _currentZodiac(context, _selectedIndex),
-            TabBar(
-              controller: _tabController,
-
-              // Цвет текста активной вкладки
-              labelColor: Colors.blue, // Цвет текста активной вкладки
-              unselectedLabelColor:
-                  Colors.grey, // Цвет текста неактивных вкладок
-              // Стиль индикатора (подчеркивание активной вкладки)
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 2.0,
-                  color: Colors.blue,
-                ), // Толщина и цвет подчеркивания
-                insets: EdgeInsets
-                    .zero, // Убираем отступы, чтобы подчеркивание было на всю ширину
-
-                borderRadius: BorderRadius.circular(10), // Закругле
-              ),
-              tabs: [
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 0), // Убираем отступ снизу
-                    child: Text(
-                      AppLocalizations.of(context)!.today,
-                      style: TextStyle(fontSize: 18), // Настройте стиль текста
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  FormattedDateWidget(daysToAdd: 0),
-                ]),
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 0), // Убираем отступ снизу
-                    child: Text(
-                      AppLocalizations.of(context)!.tomorrow,
-                      style: TextStyle(fontSize: 18), // Настройте стиль текста
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  FormattedDateWidget(daysToAdd: 1),
-                ]),
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 0), // Убираем отступ снизу
-                    child: Text(
-                      AppLocalizations.of(context)!.weekly,
-                      style: TextStyle(fontSize: 18), // Настройте стиль текста
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  WeekDatesWidget(),
-                ])
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                // physics: AlwaysScrollableScrollPhysics(),
-                physics: BouncingScrollPhysics(),
-                children: [
-                  _buildTabContent('today', _selectedIndex, widget.countryData),
-                  _buildTabContent(
-                      'tomorrow', _selectedIndex, widget.countryData),
-                  _buildTabContent(
-                      'weekly', _selectedIndex, widget.countryData),
-                ],
-              ),
-            ),
-
-            advertising(context),
-          ]),
-    );
-  }
-}
-
-/**
- * Основной контент
- */
-Widget _buildTabContent(
-    String period, String zodiac, Map<String, dynamic>? countryData) {
-//'data': {          'aquarius': {      'today'
-
-  // if (countryData == null || countryData[zodiac] == null) {
-  //   return Center(child: Text('Данные не загружены'));
-  // }
-
-  if (countryData == null || countryData['aquarius'][period] == null) {
-    return Center(child: Text('Данные не загружены'));
-  }
-
-  // Получаем данные для текущего знака зодиака
-  final zodiacData = countryData['aquarius'][period];
-  if (zodiacData == null) {
-    return Center(child: Text('Данные для $zodiac не найдены'));
-  }
-
-  // Получаем текст для текущего периода (today, tomorrow, weekly)
-  final text = countryData['aquarius'][period];
-  if (text == null) {
-    return Center(child: Text('Данные для периода "$period" не найдены'));
-  }
-
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            text,
-            style: TextStyle(fontSize: 16),
+          Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: ZodiacCarousel(
+              zodiacKeys: zodiacKeys,
+              selectedIndex: _selectedIndex,
+              onTap: (i) {
+                setState(() {
+                  _selectedIndex = i;
+                });
+              },
+              tabController: _tabController,
+              saveUserChoice: _saveUserChoice,
+              getLocalizedZodiacName: _getLocalizedZodiacName,
+            ),
           ),
-          _bar(text),
+          TabBar(
+            controller: _tabController,
+            labelColor: Colors.blue,
+            unselectedLabelColor: Colors.grey,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(width: 2.0, color: Colors.blue),
+              insets: EdgeInsets.zero,
+            ),
+            tabs: tabsTitle,
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              physics: BouncingScrollPhysics(),
+              children: tabViews,
+            ),
+          ),
+          advertising(context),
         ],
       ),
-    ),
-  );
-}
-
-Widget _bar(String text) {
-  return Text(
-    text,
-    style: TextStyle(fontSize: 16),
-  );
-}
-
-Widget _currentZodiac(BuildContext context, String zodiac) {
-  // print('новый знак $zodiac');
-  // return Center(
-  //   child: Text(': $zodiac'),
-  // );
-
-  return Card(
-    margin: const EdgeInsets.all(8.0),
-    child: Row(
-      children: [
-        // Картинка (20% ширины)
-        Container(
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: 100,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                  //zodiacs[i]['img'],
-                  zodiacs[zodiac]['img']!),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-
-        // Текст (80% ширины)
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              // items[index]['name']!
-
-              zodiacs[zodiac]['name']!,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+    );
+  }
 }
 
 Widget _title(BuildContext context, String key) {
