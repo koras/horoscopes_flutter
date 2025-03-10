@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
-import 'package:intl/intl.dart';
 import '../../constants/app_colors.dart';
-
 import 'ZodiacCarousel.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../getBottomAppBar.dart';
-import 'package:carousel_slider/carousel_slider.dart' as carousel;
-
 import '../advertising.dart';
-import 'FormattedDateWidget.dart';
-import 'WeekDatesWidget.dart';
-import 'dart:convert';
-
-import 'HoroskopeResponse.dart';
-
 import 'TabContentBuilder.dart';
+import './TitleWidget.dart';
+
+import "../compatibility/localizedZodiacName.dart";
 
 class ZodiacDetail extends StatefulWidget {
   @override
@@ -117,6 +108,8 @@ class _ZodiacScreenState extends State<ZodiacScreen>
 
   @override
   Widget build(BuildContext context) {
+    final localizationHelper = LocalizationHelper(context);
+
     if (widget.countryData == null || widget.countryData!.isEmpty) {
       print(widget.countryData);
       return Center(child: Text('Данные не содержат ключа "daily"'));
@@ -165,7 +158,8 @@ class _ZodiacScreenState extends State<ZodiacScreen>
     //return Text('1212121');
     return Scaffold(
       appBar: AppBar(
-        title: _title(context, _selectedIndex),
+        // title: _title(context, _selectedIndex),
+        title: TitleWidget(context, 'aquarius').build(),
         centerTitle: false,
       ),
       bottomNavigationBar: getBottomAppBar(context, 'zodiac'),
@@ -183,7 +177,7 @@ class _ZodiacScreenState extends State<ZodiacScreen>
               },
               tabController: _tabController,
               saveUserChoice: _saveUserChoice,
-              getLocalizedZodiacName: _getLocalizedZodiacName,
+              //   getLocalizedZodiacName: _getLocalizedZodiacName,
             ),
           ),
           TabBar(
@@ -210,43 +204,24 @@ class _ZodiacScreenState extends State<ZodiacScreen>
   }
 }
 
-Widget _title(BuildContext context, String key) {
-  String zodiac = _getLocalizedZodiacName(context, key);
-  String title_chinese_horoscope =
-      AppLocalizations.of(context)!.title_chinese_horoscope;
-  return Padding(
-    padding: const EdgeInsets.only(left: 16.0), // Отступ слева
-    child: Align(
-      alignment: Alignment.centerLeft, // Выравнивание по левому краю
-      child: Text(
-        '$title_chinese_horoscope $zodiac',
-        style: const TextStyle(
-          fontSize: 20, // Размер текста
-          //   fontWeight: FontWeight.bold, // Жирный шрифт
-          color: AppColors.onPrimary, // Цвет текста
-          fontStyle: FontStyle.normal, // Курсив
-        ),
-      ),
-    ),
-  );
-}
-
-String _getLocalizedZodiacName(BuildContext context, String key) {
-  final localizations = AppLocalizations.of(context)!;
-  final Map<String, String> zodiacTranslations = {
-    'aquarius': localizations.aquarius,
-    'aries': localizations.aries,
-    'cancer': localizations.cancer,
-    'capricorn': localizations.capricorn,
-    'gemini': localizations.gemini,
-    'leo': localizations.leo,
-    'libra': localizations.libra,
-    'pisces': localizations.pisces,
-    'sagittarius': localizations.sagittarius,
-    'scorpio': localizations.scorpio,
-    'taurus': localizations.taurus,
-    'virgo': localizations.virgo,
-  };
-  return zodiacTranslations[key] ??
-      key; // Если ключ не найден, возвращаем сам key
-}
+// Widget _title(BuildContext context, String key) {
+//   final localizationHelper = LocalizationHelper(context);
+//   String zodiac = localizationHelper.localizedZodiacName(key);
+//   String title_chinese_horoscope =
+//       AppLocalizations.of(context)!.title_chinese_horoscope;
+//   return Padding(
+//     padding: const EdgeInsets.only(left: 16.0), // Отступ слева
+//     child: Align(
+//       alignment: Alignment.centerLeft, // Выравнивание по левому краю
+//       child: Text(
+//         '$title_chinese_horoscope $zodiac',
+//         style: const TextStyle(
+//           fontSize: 20, // Размер текста
+//           //   fontWeight: FontWeight.bold, // Жирный шрифт
+//           color: AppColors.onPrimary, // Цвет текста
+//           fontStyle: FontStyle.normal, // Курсив
+//         ),
+//       ),
+//     ),
+//   );
+// }

@@ -21,6 +21,7 @@ import 'TabContentBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
+import "../compatibility/localizedZodiacName.dart";
 
 class ZodiacCarousel extends StatelessWidget {
   final List<String> zodiacKeys;
@@ -28,8 +29,8 @@ class ZodiacCarousel extends StatelessWidget {
   final Function(String) onTap;
   final TabController tabController;
   final Function(String) saveUserChoice;
-  final String Function(BuildContext context, String key)
-      getLocalizedZodiacName;
+
+  // final String Function(BuildContext context, String key)
 
   const ZodiacCarousel({
     Key? key,
@@ -38,11 +39,12 @@ class ZodiacCarousel extends StatelessWidget {
     required this.onTap,
     required this.tabController,
     required this.saveUserChoice,
-    required this.getLocalizedZodiacName,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final localizationHelper = LocalizationHelper(context);
+
     return carousel.CarouselSlider(
       items: zodiacKeys.map((i) {
         return ClipRRect(
@@ -89,7 +91,7 @@ class ZodiacCarousel extends StatelessWidget {
                             padding: EdgeInsets.only(
                                 right: 0, left: 0, bottom: 0, top: 5),
                             child: Text(
-                              getLocalizedZodiacName(context, i),
+                              localizationHelper.localizedZodiacName(i),
                               style: const TextStyle(
                                 fontSize: 14.0,
                                 color: AppColors.onPrimary,
