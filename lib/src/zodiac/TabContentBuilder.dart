@@ -8,13 +8,6 @@ import 'zodiac_data.dart';
 import 'package:intl/intl.dart';
 import '../../constants/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../getBottomAppBar.dart';
-import 'package:carousel_slider/carousel_slider.dart' as carousel;
-
-import '../advertising.dart';
-import 'FormattedDateWidget.dart';
-import 'WeekDatesWidget.dart';
-import 'dart:convert';
 
 import 'HoroskopeResponse.dart';
 
@@ -30,7 +23,6 @@ class TabContentBuilder {
   TabContentBuilder({
     required this.period,
     required this.dataForDate,
-    //
     required this.zodiac,
     required this.locale,
     // this.countryData,
@@ -42,30 +34,96 @@ class TabContentBuilder {
     final textRu = zodiacData.text.ru;
     final textEn = zodiacData.text.en;
 
-    final zodiacText = ZodiacData.fromJson(dataForDate[zodiac]);
+    print(zodiacData.favoriteNumbers);
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              getLocalizedText(locale, zodiacData),
-              style: TextStyle(fontSize: 18),
-            )
-            // _bar(text),
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        getTitle('Гороскоп'),
+        getText(locale, zodiacData),
+        getTitle('Счастливые числа'),
+        Row(
+          mainAxisAlignment:
+              MainAxisAlignment.spaceEvenly, // Равномерное распределение
+
+          children: zodiacData.favoriteNumbers.map((number) {
+            return Container(
+              margin: EdgeInsets.all(10.0), // Отступы между кругами
+              child: CircleWithNumber(number: number),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class CircleWithNumber extends StatelessWidget {
+  final int number;
+  CircleWithNumber({required this.number});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 70.0, // Диаметр круга
+      height: 70.0, // Диаметр круга
+      decoration: BoxDecoration(
+        shape: BoxShape.circle, // Делаем контейнер круглым
+        color: AppColors.backgroundActive, // Цвет круга
+        border: Border.all(
+          color: AppColors.backgroundActiveCircle, // Цвет ободка
+          width: 3.0, // Толщина ободка
+        ),
+      ),
+      child: Center(
+        child: Text(
+          number.toString(), // Число внутри круга
+          style: TextStyle(
+            color: AppColors.onPrimary, // Цвет текста
+            fontSize: 20.0, // Размер шрифта
+            fontWeight: FontWeight.bold, // Жирный шрифт
+          ),
         ),
       ),
     );
   }
 }
 
-String getLocalizedText(String locale, ZodiacData zodiacData) {
+Widget getText(locale, zodiacData) {
+  String text;
   if (locale == 'ru') {
-    return zodiacData.text.ru; // Текст на русском
+    text = zodiacData.text.ru; // Текст на русском
   } else {
-    return zodiacData.text.en; // Текст на английском (по умолчанию)
+    text = zodiacData.text.en; // Текст на английском (по умолчанию)
   }
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            text,
+            style: TextStyle(fontSize: 18),
+          )
+          // _bar(text),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget getTitle(String nameTitle) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: 20.0, top: 25.0),
+    child: SingleChildScrollView(
+      child: Text(
+        nameTitle,
+        style: TextStyle(
+          color: AppColors.onMenuButtonActive, // Цвет текста
+          fontSize: 25.0, // Размер шрифта
+          fontWeight: FontWeight.bold, // Жирный шрифт
+        ),
+      ),
+    ),
+  );
 }

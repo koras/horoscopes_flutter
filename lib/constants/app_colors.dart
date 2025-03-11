@@ -13,6 +13,9 @@ class AppColors {
   static const Color backgroundMenu = Color.fromARGB(255, 0, 22, 39);
   // активная иконка
   static const Color backgroundActive = Color.fromARGB(255, 2, 56, 100);
+
+  // круги в счастливых числах
+  static const Color backgroundActiveCircle = Color.fromARGB(255, 2, 175, 60);
   // static const Color surface = Color(0xFFF5F5F5);
 
   // цвет знака зодиака
