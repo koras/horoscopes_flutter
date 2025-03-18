@@ -55,7 +55,7 @@ class _ZodiacDetailPageState extends State<ZodiacDetail> {
   @override
   Widget build(BuildContext context) {
     if (dataDao == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(), // Индикатор загрузки
         ),
@@ -155,7 +155,7 @@ class _ZodiacScreenState extends State<ZodiacScreen>
         dataForDate: dataForDate,
         zodiac: _selectedIndex,
         locale: currentLanguage,
-      ).build();
+      ).build(context);
     }).toList();
 
     //return Text('1212121');
@@ -186,7 +186,7 @@ class _ZodiacScreenState extends State<ZodiacScreen>
             controller: _tabController,
             labelColor: Colors.blue,
             unselectedLabelColor: Colors.grey,
-            indicator: UnderlineTabIndicator(
+            indicator: const UnderlineTabIndicator(
               borderSide: BorderSide(width: 2.0, color: Colors.blue),
               insets: EdgeInsets.zero,
             ),

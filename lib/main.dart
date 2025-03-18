@@ -5,7 +5,6 @@ import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'src/start.dart';
-import 'src/pause//RotatingSVG.dart';
 //import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
@@ -43,7 +42,7 @@ void main() async {
 
       fallbackLocale: Locale('en'), // Язык по умолчанию
 
-      //  startLocale: const Locale('en'), // Установите  локаль
+      startLocale: const Locale('en'), // Установите  локаль
       //
       child: Start(),
       // child: RotatingSVG(),

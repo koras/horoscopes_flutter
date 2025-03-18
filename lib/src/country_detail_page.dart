@@ -47,13 +47,13 @@ class _CountryDetailPageState extends State<CountryDetailPage> {
                     countryData!['flags']['png'],
                     height: 150,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text('Country: ${countryData!['name']['common']}',
                       style: TextStyle(fontSize: 20)),
                   Text(
                       'Capital: ${countryData!['capital']?.join(", ") ?? "N/A"}'),
                   Text('Population: ${countryData!['population']}'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     child: Text('Back'),

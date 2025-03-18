@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'zodiac_data.dart';
-import 'package:intl/intl.dart';
+
 import '../../constants/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../getBottomAppBar.dart';
+
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
 
-import '../advertising.dart';
-import 'FormattedDateWidget.dart';
-import 'WeekDatesWidget.dart';
-import 'dart:convert';
-
-import 'HoroskopeResponse.dart';
-
-import 'TabContentBuilder.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import "../compatibility/localizedZodiacName.dart";
 
 class ZodiacCarousel extends StatelessWidget {
@@ -88,7 +73,7 @@ class ZodiacCarousel extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 right: 0, left: 0, bottom: 0, top: 5),
                             child: Text(
                               localizationHelper.localizedZodiacName(i),

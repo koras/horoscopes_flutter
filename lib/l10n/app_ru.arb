@@ -21,6 +21,12 @@
   "title_compatibility": "Совместимость по восточному гороскопу",
   "aquarius": "Водолей",
   "title_chinese_horoscope": "Китайский гороскоп:",
+
+  "title_horoscope_content": "Гороскоп",
+  "title_lucky_day_content": "Числа на удачу",
+
+   
+
   "aries":"Овен",
   "cancer":"Рак",
   "capricorn":"Козерог",

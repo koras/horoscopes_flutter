@@ -1,17 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'zodiac_data.dart';
-import 'package:intl/intl.dart';
 import '../../constants/app_colors.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import "../compatibility/localizedZodiacName.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'HoroskopeResponse.dart';
-
-import 'package:flutter/material.dart';
 
 class TabContentBuilder {
   final String period;
@@ -20,16 +13,24 @@ class TabContentBuilder {
   final dataForDate;
   final String locale; // Передаем текущую локаль
 
-  TabContentBuilder({
-    required this.period,
-    required this.dataForDate,
-    required this.zodiac,
-    required this.locale,
-    // this.countryData,
-  });
+  // final context;
 
-  Widget build() {
+  TabContentBuilder(
+      {required this.period,
+      required this.dataForDate,
+      required this.zodiac,
+      required this.locale
+      // this.countryData,
+      });
+
+  Widget build(BuildContext context) {
     final zodiacData = ZodiacData.fromJson(dataForDate[zodiac]);
+
+    final localizationHelper = LocalizationHelper(context);
+
+    String title_horoscope_content =
+        AppLocalizations.of(context)!.title_horoscope_content;
+
     // // Получаем текст на русском и английском
     // final textRu = zodiacData.text.ru;
     // final textEn = zodiacData.text.en;
@@ -38,9 +39,9 @@ class TabContentBuilder {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          getTitle('Гороскоп'),
+          getTitle(AppLocalizations.of(context)!.title_horoscope_content),
           getText(locale, zodiacData),
-          getTitle('Счастливые числа'),
+          getTitle(AppLocalizations.of(context)!.title_lucky_day_content),
           Row(
             mainAxisAlignment:
                 MainAxisAlignment.spaceEvenly, // Равномерное распределение
