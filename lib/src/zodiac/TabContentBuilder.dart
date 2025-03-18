@@ -30,30 +30,30 @@ class TabContentBuilder {
 
   Widget build() {
     final zodiacData = ZodiacData.fromJson(dataForDate[zodiac]);
-    // Получаем текст на русском и английском
-    final textRu = zodiacData.text.ru;
-    final textEn = zodiacData.text.en;
+    // // Получаем текст на русском и английском
+    // final textRu = zodiacData.text.ru;
+    // final textEn = zodiacData.text.en;
 
-    print(zodiacData.favoriteNumbers);
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          getTitle('Гороскоп'),
+          getText(locale, zodiacData),
+          getTitle('Счастливые числа'),
+          Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly, // Равномерное распределение
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        getTitle('Гороскоп'),
-        getText(locale, zodiacData),
-        getTitle('Счастливые числа'),
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceEvenly, // Равномерное распределение
-
-          children: zodiacData.favoriteNumbers.map((number) {
-            return Container(
-              margin: EdgeInsets.all(10.0), // Отступы между кругами
-              child: CircleWithNumber(number: number),
-            );
-          }).toList(),
-        ),
-      ],
+            children: zodiacData.favoriteNumbers.map((number) {
+              return Container(
+                margin: const EdgeInsets.all(10.0), // Отступы между кругами
+                child: CircleWithNumber(number: number),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -77,7 +77,7 @@ class CircleWithNumber extends StatelessWidget {
       child: Center(
         child: Text(
           number.toString(), // Число внутри круга
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.onPrimary, // Цвет текста
             fontSize: 20.0, // Размер шрифта
             fontWeight: FontWeight.bold, // Жирный шрифт
@@ -114,11 +114,11 @@ Widget getText(locale, zodiacData) {
 
 Widget getTitle(String nameTitle) {
   return Padding(
-    padding: EdgeInsets.only(bottom: 20.0, top: 25.0),
+    padding: const EdgeInsets.only(bottom: 20.0, top: 25.0),
     child: SingleChildScrollView(
       child: Text(
         nameTitle,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.onMenuButtonActive, // Цвет текста
           fontSize: 25.0, // Размер шрифта
           fontWeight: FontWeight.bold, // Жирный шрифт

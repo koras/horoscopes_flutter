@@ -28,8 +28,10 @@ class _ZodiacDetailPageState extends State<ZodiacDetail> {
   Future<void> fetchCountryDetails() async {
     try {
       final response = await Dio().get(url);
+      print('send server ');
       if (response.statusCode == 200) {
         Map<String, dynamic> decodedData = response.data;
+
         if (decodedData.containsKey('daily')) {
           setState(() {
             dataDao = decodedData['daily'];
@@ -53,7 +55,11 @@ class _ZodiacDetailPageState extends State<ZodiacDetail> {
   @override
   Widget build(BuildContext context) {
     if (dataDao == null) {
-      return Center(child: Text('1111'));
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(), // Индикатор загрузки
+        ),
+      );
     }
     return ZodiacScreen(countryData: dataDao!);
   }
